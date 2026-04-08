@@ -1,8 +1,8 @@
 import { google } from 'googleapis';
 
 const ENGINEERS = [
-  'Sunny', 'Joseph', 'Leo', 'Ian', 'Alien', 'Vincent',
-  'Ali', 'Allen', 'Wallace', 'Daniel', 'Carlos',
+  'Joseph', 'Leo', 'Ian', 'Alien', 'Vincent',
+  'Allen', 'Wallace', 'Daniel', 'Carlos',
 ];
 
 function getAuth() {
@@ -65,6 +65,26 @@ function summarizeEngineer(name, rows) {
   };
 }
 
+const EXCLUDED_SHEETS = ['summary_temp', 'summary'];
+
+function isExcluded(title) {
+  const l = title.toLowerCase();
+  return EXCLUDED_SHEETS.some((ex) => l.includes(ex));
+}
+
+function findEngineerSheet(sheetTitles, engineer) {
+  const lower = engineer.toLowerCase();
+  const candidates = sheetTitles.filter((t) => !isExcluded(t));
+  // Prefer sheets that look like a Main/CAR sheet for this engineer
+  const mainMatch = candidates.find((t) => {
+    const l = t.toLowerCase();
+    return l.includes(lower) && (l.includes('main') || l.includes('car'));
+  });
+  if (mainMatch) return mainMatch;
+  // Fallback: any non-excluded sheet containing engineer name
+  return candidates.find((t) => t.toLowerCase().includes(lower));
+}
+
 export async function getSheetData() {
   const sheetId = process.env.GOOGLE_SHEET_ID;
   if (!sheetId) throw new Error('Missing GOOGLE_SHEET_ID');
@@ -72,21 +92,54 @@ export async function getSheetData() {
   const auth = getAuth();
   const sheets = google.sheets({ version: 'v4', auth });
 
-  const ranges = ENGINEERS.map((n) => `Main_${n}!A1:Z500`);
-  let response;
+  // Step 1: get all sheet titles
+  let meta;
   try {
-    response = await sheets.spreadsheets.values.batchGet({
+    meta = await sheets.spreadsheets.get({
       spreadsheetId: sheetId,
-      ranges,
+      fields: 'sheets.properties.title',
     });
   } catch (err) {
-    throw new Error(`Google Sheets API error: ${err.message}`);
+    throw new Error(`Google Sheets metadata error: ${err.message}`);
+  }
+  const sheetTitles = (meta.data.sheets || []).map((s) => s.properties.title);
+
+  // Step 2: map each engineer to an actual sheet title
+  const matched = ENGINEERS.map((name) => ({
+    name,
+    sheetTitle: findEngineerSheet(sheetTitles, name),
+  }));
+
+  // Step 3: batchGet only the matched ranges (skip unmatched)
+  const toFetch = matched.filter((m) => m.sheetTitle);
+  const ranges = toFetch.map((m) => `'${m.sheetTitle}'!A1:Z500`);
+
+  let response = { data: { valueRanges: [] } };
+  if (ranges.length > 0) {
+    try {
+      response = await sheets.spreadsheets.values.batchGet({
+        spreadsheetId: sheetId,
+        ranges,
+      });
+    } catch (err) {
+      throw new Error(`Google Sheets values error: ${err.message}`);
+    }
   }
 
   const valueRanges = response.data.valueRanges || [];
-  return ENGINEERS.map((name, i) => {
-    const values = valueRanges[i]?.values || [];
+  const fetchedMap = new Map();
+  toFetch.forEach((m, i) => {
+    fetchedMap.set(m.name, valueRanges[i]?.values || []);
+  });
+
+  return matched.map(({ name, sheetTitle }) => {
+    const values = fetchedMap.get(name) || [];
     const rows = rowsToObjects(values);
-    return summarizeEngineer(name, rows);
+    const summary = summarizeEngineer(name, rows);
+    summary.sheetTitle = sheetTitle || null;
+    if (!sheetTitle) {
+      summary.task = 'no sheet found';
+    }
+    return summary;
   });
 }
