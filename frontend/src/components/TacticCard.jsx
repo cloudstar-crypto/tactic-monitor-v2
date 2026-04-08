@@ -24,46 +24,72 @@ function TacticCard({ data, variant = 'member' }) {
   const colors = ALERT_COLORS[alertLevel] || ALERT_COLORS.NORMAL;
   const isCaptain = variant === 'captain';
 
+  if (isCaptain) {
+    // Horizontal layout: identity on left, stats + ecg on right
+    return (
+      <div
+        className="tc-card tc-captain"
+        style={{ '--tc-border': colors.border, '--tc-glow': colors.glow }}
+      >
+        <span className="tc-corner tc-tl" />
+        <span className="tc-corner tc-tr" />
+        <span className="tc-corner tc-bl" />
+        <span className="tc-corner tc-br" />
+
+        <div className="tc-captain-identity">
+          <SkullMarineAvatar size={76} alertLevel={alertLevel} isCaptain />
+          <div className="tc-id">
+            <div className="tc-role" style={{ color: colors.label }}>CAPTAIN</div>
+            <div className="tc-name">{name}</div>
+            <div className="tc-alert" style={{ color: colors.label }}>● {alertLevel}</div>
+          </div>
+        </div>
+
+        <div className="tc-captain-readout">
+          <div className="tc-stats">
+            <StatBox label="ALL" value={all} />
+            <StatBox label="ACTIVE" value={active} highlight="#b5d477" />
+            <StatBox label="PEND" value={pending} highlight={colors.label} />
+            <StatBox label="DONE" value={done} highlight="#6b8e23" />
+          </div>
+          <div className="tc-ecg">
+            <HeartbeatChart width={360} height={28} alertLevel={alertLevel} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
-      className={`tc-card tc-${variant}`}
-      style={{
-        '--tc-border': colors.border,
-        '--tc-glow': colors.glow,
-      }}
+      className="tc-card tc-member"
+      style={{ '--tc-border': colors.border, '--tc-glow': colors.glow }}
     >
-      {/* Corner brackets */}
       <span className="tc-corner tc-tl" />
       <span className="tc-corner tc-tr" />
       <span className="tc-corner tc-bl" />
       <span className="tc-corner tc-br" />
 
       <div className="tc-top">
-        <SkullMarineAvatar
-          size={isCaptain ? 84 : 64}
-          alertLevel={alertLevel}
-          isCaptain={isCaptain}
-        />
+        <SkullMarineAvatar size={52} alertLevel={alertLevel} isCaptain={false} />
         <div className="tc-id">
           <div className="tc-role" style={{ color: colors.label }}>
-            {isCaptain ? 'CAPTAIN' : role || 'OPERATOR'}
+            {role || 'OPERATOR'}
           </div>
           <div className="tc-name">{name}</div>
-          <div className="tc-alert" style={{ color: colors.label }}>
-            ● {alertLevel}
-          </div>
+          <div className="tc-alert" style={{ color: colors.label }}>● {alertLevel}</div>
         </div>
       </div>
 
       <div className="tc-stats">
         <StatBox label="ALL" value={all} />
-        <StatBox label="ACTIVE" value={active} highlight="#b5d477" />
+        <StatBox label="ACT" value={active} highlight="#b5d477" />
         <StatBox label="PEND" value={pending} highlight={colors.label} />
         <StatBox label="DONE" value={done} highlight="#6b8e23" />
       </div>
 
       <div className="tc-ecg">
-        <HeartbeatChart width={isCaptain ? 340 : 220} height={36} alertLevel={alertLevel} />
+        <HeartbeatChart width={220} height={26} alertLevel={alertLevel} />
       </div>
     </div>
   );
