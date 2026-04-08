@@ -62,7 +62,7 @@ function TacticCard({ data, variant = 'member' }) {
 
   return (
     <div
-      className="tc-card tc-member"
+      className={`tc-card tc-member tc-alert-${alertLevel}`}
       style={{ '--tc-border': colors.border, '--tc-glow': colors.glow }}
     >
       <span className="tc-corner tc-tl" />
@@ -71,13 +71,12 @@ function TacticCard({ data, variant = 'member' }) {
       <span className="tc-corner tc-br" />
 
       <div className="tc-top">
-        <SkullMarineAvatar size={52} alertLevel={alertLevel} isCaptain={false} />
+        <SkullMarineAvatar size={46} alertLevel={alertLevel} isCaptain={false} />
         <div className="tc-id">
           <div className="tc-role" style={{ color: colors.label }}>
             {role || 'OPERATOR'}
           </div>
           <div className="tc-name">{name}</div>
-          <div className="tc-alert" style={{ color: colors.label }}>● {alertLevel}</div>
         </div>
       </div>
 
@@ -88,8 +87,13 @@ function TacticCard({ data, variant = 'member' }) {
         <StatBox label="DONE" value={done} highlight="#6b8e23" />
       </div>
 
+      <div className="tc-alert-bar" style={{ color: colors.label, borderColor: colors.border }}>
+        <span className="tc-alert-dot" style={{ background: colors.glow }} />
+        {alertLevel}
+      </div>
+
       <div className="tc-ecg">
-        <HeartbeatChart width={220} height={26} alertLevel={alertLevel} />
+        <HeartbeatChart width={220} height={20} alertLevel={alertLevel} />
       </div>
     </div>
   );

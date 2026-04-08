@@ -419,6 +419,52 @@ input {
   overflow: hidden;
 }
 
+.tc-member {
+  padding: 6px 10px 8px;
+  gap: 4px;
+}
+
+.tc-member .tc-top {
+  margin-bottom: 2px;
+  gap: 8px;
+}
+
+.tc-member .tc-name {
+  font-size: 13px;
+}
+
+.tc-alert-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 3px 0;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-top: 1px dashed rgba(143, 174, 95, 0.2);
+  border-bottom: 1px dashed rgba(143, 174, 95, 0.2);
+  flex: 0 0 auto;
+  min-height: 20px;
+}
+
+.tc-alert-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.tc-alert-WARNING .tc-alert-dot {
+  animation: hud-pulse 1.2s ease-in-out infinite;
+}
+
+.tc-alert-CRITICAL .tc-alert-dot {
+  animation: hud-pulse 0.6s ease-in-out infinite;
+}
+
 .tc-card:hover {
   transform: translateY(-2px);
   box-shadow:
