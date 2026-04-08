@@ -1,52 +1,103 @@
 import { memo, useId } from 'react';
 
-// Animated ECG-style heartbeat chart. Pattern complexity + color driven by alertLevel.
-function HeartbeatChart({ width = 240, height = 48, alertLevel = 'NORMAL' }) {
-  const id = useId().replace(/:/g, '_');
+/*
+  Realistic ECG-style heartbeat chart.
+  Path is a PQRST waveform repeated twice across the viewBox and
+  scrolled horizontally via transform. The viewport shows half
+  the path at any given time, giving an infinite scroll effect.
+*/
+
+// Build one PQRST cycle starting at x0, baseline y.
+// Cycle width ~180 units. Amplitude scales with `amp`.
+function buildPQRST(x0, y, amp) {
+  const p = amp * 0.25;   // P wave height
+  const q = amp * 0.15;   // Q dip
+  const r = amp * 1.0;    // R spike height
+  const s = amp * 0.55;   // S dip depth
+  const t = amp * 0.35;   // T wave height
+
+  return [
+    `M ${x0} ${y}`,
+    `L ${x0 + 14} ${y}`,
+    // P wave (gentle bump)
+    `Q ${x0 + 22} ${y - p * 2} ${x0 + 30} ${y}`,
+    `L ${x0 + 40} ${y}`,
+    // Q dip
+    `L ${x0 + 44} ${y + q}`,
+    // R spike
+    `L ${x0 + 48} ${y - r}`,
+    // S down
+    `L ${x0 + 52} ${y + s}`,
+    // Return to baseline
+    `L ${x0 + 58} ${y}`,
+    `L ${x0 + 72} ${y}`,
+    // T wave (rounded)
+    `Q ${x0 + 86} ${y - t * 1.5} ${x0 + 100} ${y}`,
+    `L ${x0 + 180} ${y}`,
+  ].join(' ');
+}
+
+function HeartbeatChart({ width = 240, height = 40, alertLevel = 'NORMAL' }) {
+  const uid = useId().replace(/:/g, '_');
 
   const config = {
     NORMAL: {
       color: '#8fae5f',
       glow: '#b5d477',
-      path: 'M 0 24 L 30 24 L 36 24 L 42 24 L 50 8 L 58 40 L 66 18 L 72 24 L 120 24 L 126 24 L 132 24 L 140 10 L 148 38 L 156 20 L 162 24 L 240 24',
-      duration: '1.4s',
+      duration: '2.4s',
+      amp: 16,
     },
     WARNING: {
       color: '#e8c547',
       glow: '#ffd966',
-      path: 'M 0 24 L 20 24 L 28 14 L 34 34 L 42 10 L 50 38 L 58 6 L 66 40 L 74 18 L 80 24 L 110 24 L 118 12 L 126 34 L 134 8 L 142 40 L 150 6 L 158 38 L 166 20 L 174 24 L 240 24',
-      duration: '1.0s',
+      duration: '1.3s',
+      amp: 18,
     },
     CRITICAL: {
       color: '#e74c3c',
       glow: '#ff6b5b',
-      path: 'M 0 24 L 12 24 L 18 4 L 24 44 L 30 2 L 36 46 L 42 6 L 48 42 L 54 10 L 60 40 L 66 4 L 72 44 L 80 24 L 100 24 L 112 4 L 118 44 L 124 2 L 130 46 L 136 6 L 142 42 L 148 8 L 154 40 L 160 6 L 166 44 L 174 24 L 240 24',
-      duration: '0.6s',
+      duration: '0.65s',
+      amp: 22,
     },
   }[alertLevel] || {
     color: '#8fae5f',
     glow: '#b5d477',
-    path: 'M 0 24 L 240 24',
-    duration: '2s',
+    duration: '2.4s',
+    amp: 16,
   };
+
+  const VB_W = 360;          // inner viewBox width shown at once
+  const VB_H = 48;
+  const baseline = VB_H / 2; // y=24
+  const cycleWidth = 180;
+
+  // Build three cycles so translating one cycle width creates seamless loop
+  const path =
+    buildPQRST(0, baseline, config.amp) + ' ' +
+    buildPQRST(cycleWidth, baseline, config.amp) + ' ' +
+    buildPQRST(cycleWidth * 2, baseline, config.amp);
 
   return (
     <svg
       width={width}
       height={height}
-      viewBox={`0 0 240 ${48}`}
+      viewBox={`0 0 ${VB_W} ${VB_H}`}
       preserveAspectRatio="none"
-      style={{ display: 'block' }}
+      style={{ display: 'block', overflow: 'hidden' }}
     >
       <defs>
-        <linearGradient id={`ecg-fade-${id}`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor={config.color} stopOpacity="0" />
-          <stop offset="15%" stopColor={config.color} stopOpacity="1" />
-          <stop offset="85%" stopColor={config.color} stopOpacity="1" />
-          <stop offset="100%" stopColor={config.color} stopOpacity="0" />
+        {/* Grid gradient mask — fade edges so scroll loop isn't obvious */}
+        <linearGradient id={`ecg-fade-${uid}`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#000" stopOpacity="0" />
+          <stop offset="10%" stopColor="#000" stopOpacity="1" />
+          <stop offset="90%" stopColor="#000" stopOpacity="1" />
+          <stop offset="100%" stopColor="#000" stopOpacity="0" />
         </linearGradient>
-        <filter id={`ecg-glow-${id}`} x="-20%" y="-50%" width="140%" height="200%">
-          <feGaussianBlur stdDeviation="1.5" result="blur" />
+        <mask id={`ecg-mask-${uid}`}>
+          <rect width={VB_W} height={VB_H} fill={`url(#ecg-fade-${uid})`} />
+        </mask>
+        <filter id={`ecg-glow-${uid}`} x="-20%" y="-50%" width="140%" height="200%">
+          <feGaussianBlur stdDeviation="1.2" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -55,33 +106,38 @@ function HeartbeatChart({ width = 240, height = 48, alertLevel = 'NORMAL' }) {
       </defs>
 
       {/* Grid background */}
-      <g stroke={config.color} strokeWidth="0.3" opacity="0.15">
-        <line x1="0" y1="12" x2="240" y2="12" />
-        <line x1="0" y1="24" x2="240" y2="24" />
-        <line x1="0" y1="36" x2="240" y2="36" />
-        {Array.from({ length: 13 }).map((_, i) => (
-          <line key={i} x1={i * 20} y1="0" x2={i * 20} y2="48" />
+      <g stroke={config.color} strokeWidth="0.3" opacity="0.12">
+        <line x1="0" y1={baseline} x2={VB_W} y2={baseline} />
+        <line x1="0" y1={baseline - 12} x2={VB_W} y2={baseline - 12} />
+        <line x1="0" y1={baseline + 12} x2={VB_W} y2={baseline + 12} />
+        {Array.from({ length: 10 }).map((_, i) => (
+          <line key={i} x1={i * 40} y1="0" x2={i * 40} y2={VB_H} />
         ))}
       </g>
 
-      {/* ECG waveform */}
-      <path
-        d={config.path}
-        fill="none"
-        stroke={`url(#ecg-fade-${id})`}
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-        strokeLinecap="round"
-        filter={`url(#ecg-glow-${id})`}
-      >
-        <animate
-          attributeName="stroke-dasharray"
-          from="0 600"
-          to="600 0"
-          dur={config.duration}
-          repeatCount="indefinite"
-        />
-      </path>
+      {/* Scrolling waveform */}
+      <g mask={`url(#ecg-mask-${uid})`}>
+        <g>
+          <path
+            d={path}
+            fill="none"
+            stroke={config.color}
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            filter={`url(#ecg-glow-${uid})`}
+            opacity="0.95"
+          />
+          <animateTransform
+            attributeName="transform"
+            type="translate"
+            from={`${cycleWidth} 0`}
+            to="0 0"
+            dur={config.duration}
+            repeatCount="indefinite"
+          />
+        </g>
+      </g>
     </svg>
   );
 }
