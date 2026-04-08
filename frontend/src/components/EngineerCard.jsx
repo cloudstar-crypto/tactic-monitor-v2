@@ -12,9 +12,14 @@ function EngineerCard({ engineer }) {
       backgroundColor: '#1a1e3f',
     }}>
       <h3 style={{ marginBottom: '10px' }}>{engineer.name || 'Unknown'}</h3>
-      <p style={{ fontSize: '14px', marginBottom: '10px' }}>
-        任務：{engineer.task || 'N/A'}
+      <p style={{ fontSize: '14px', marginBottom: '6px' }}>
+        狀態：{engineer.task || 'N/A'}
       </p>
+      {engineer.latestTask && engineer.latestTask !== '—' && (
+        <p style={{ fontSize: '12px', marginBottom: '10px', color: '#c9a76a' }}>
+          最新：{engineer.latestTask}
+        </p>
+      )}
       <div style={{
         backgroundColor: '#0a0e27',
         overflow: 'hidden',
