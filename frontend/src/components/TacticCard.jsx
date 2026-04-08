@@ -1,0 +1,72 @@
+import { memo } from 'react';
+import SkullMarineAvatar from './SkullMarineAvatar';
+import HeartbeatChart from './HeartbeatChart';
+
+const ALERT_COLORS = {
+  NORMAL: { border: '#6b8e23', glow: '#8fae5f', label: '#b5d477' },
+  WARNING: { border: '#b8941e', glow: '#e8c547', label: '#ffd966' },
+  CRITICAL: { border: '#a03020', glow: '#e74c3c', label: '#ff6b5b' },
+};
+
+function StatBox({ label, value, highlight }) {
+  return (
+    <div className="tc-stat">
+      <div className="tc-stat-label">{label}</div>
+      <div className="tc-stat-value" style={{ color: highlight || '#e8f0d6' }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function TacticCard({ data, variant = 'member' }) {
+  const { name, role, all = 0, active = 0, pending = 0, done = 0, alertLevel = 'NORMAL' } = data || {};
+  const colors = ALERT_COLORS[alertLevel] || ALERT_COLORS.NORMAL;
+  const isCaptain = variant === 'captain';
+
+  return (
+    <div
+      className={`tc-card tc-${variant}`}
+      style={{
+        '--tc-border': colors.border,
+        '--tc-glow': colors.glow,
+      }}
+    >
+      {/* Corner brackets */}
+      <span className="tc-corner tc-tl" />
+      <span className="tc-corner tc-tr" />
+      <span className="tc-corner tc-bl" />
+      <span className="tc-corner tc-br" />
+
+      <div className="tc-top">
+        <SkullMarineAvatar
+          size={isCaptain ? 84 : 64}
+          alertLevel={alertLevel}
+          isCaptain={isCaptain}
+        />
+        <div className="tc-id">
+          <div className="tc-role" style={{ color: colors.label }}>
+            {isCaptain ? 'CAPTAIN' : role || 'OPERATOR'}
+          </div>
+          <div className="tc-name">{name}</div>
+          <div className="tc-alert" style={{ color: colors.label }}>
+            ● {alertLevel}
+          </div>
+        </div>
+      </div>
+
+      <div className="tc-stats">
+        <StatBox label="ALL" value={all} />
+        <StatBox label="ACTIVE" value={active} highlight="#b5d477" />
+        <StatBox label="PEND" value={pending} highlight={colors.label} />
+        <StatBox label="DONE" value={done} highlight="#6b8e23" />
+      </div>
+
+      <div className="tc-ecg">
+        <HeartbeatChart width={isCaptain ? 340 : 220} height={36} alertLevel={alertLevel} />
+      </div>
+    </div>
+  );
+}
+
+export default memo(TacticCard);

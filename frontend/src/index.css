@@ -1,52 +1,524 @@
+/* ============================================================
+   TACTIC MONITOR V2 — Global Styles
+   Military tactical HUD / army green futuristic
+   ============================================================ */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #0a0e27;
-  color: #d4af37;
-  line-height: 1.6;
-}
-
 :root {
-  --primary: #d4af37;
-  --dark: #0a0e27;
-  --border: #8b7355;
+  --bg-abyss: #070b04;
+  --bg-deep: #0d1409;
+  --bg-panel: #121c0c;
+  --bg-panel-2: #1a2610;
+  --army-dark: #2d3817;
+  --army: #4a5d23;
+  --army-mid: #6b8e23;
+  --army-light: #8fae5f;
+  --army-glow: #b5d477;
+  --amber: #d4a24c;
+  --amber-glow: #f0c97a;
+  --warning: #e8c547;
+  --critical: #e74c3c;
+  --text: #e8f0d6;
+  --text-dim: #8a9b6c;
+  --grid: rgba(143, 174, 95, 0.08);
+  --border-soft: rgba(143, 174, 95, 0.25);
+  --border-mid: rgba(143, 174, 95, 0.45);
 }
 
-h1, h2, h3 {
-  font-weight: bold;
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Menlo', 'Consolas', monospace;
+  background: var(--bg-abyss);
+  color: var(--text);
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
 
 button {
-  background-color: var(--primary);
-  color: var(--dark);
-  border: 2px solid var(--border);
-  padding: 10px 20px;
+  background: transparent;
+  color: var(--army-light);
+  border: 1px solid var(--border-mid);
+  padding: 8px 16px;
   cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
 }
 
 button:hover {
-  background-color: #e5bf51;
-  box-shadow: 0 0 10px var(--primary);
+  background: rgba(143, 174, 95, 0.12);
+  border-color: var(--army-light);
+  box-shadow: 0 0 12px rgba(143, 174, 95, 0.4);
 }
 
 input {
-  background-color: #1a1e3f;
-  color: var(--primary);
-  border: 1px solid var(--border);
-  padding: 10px;
+  background: var(--bg-panel-2);
+  color: var(--army-glow);
+  border: 1px solid var(--border-mid);
+  padding: 10px 12px;
+  font-family: inherit;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+}
+
+/* ============================================================
+   Desktop app shell
+   ============================================================ */
+
+.app-desktop {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse at top, #0f1a08 0%, #070b04 70%),
+    var(--bg-abyss);
+  color: var(--text);
+}
+
+.app-mobile {
+  min-height: 100vh;
+  background: #0a0e27;
+}
+
+/* ============================================================
+   Header (desktop HUD)
+   ============================================================ */
+
+.hud-header {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 10px 24px;
+  background: linear-gradient(180deg, rgba(45, 56, 23, 0.5), transparent);
+  border-bottom: 1px solid var(--border-mid);
+  position: relative;
+}
+
+.hud-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--army-light) 20%, var(--army-light) 80%, transparent);
+  opacity: 0.4;
+}
+
+.hud-left, .hud-center, .hud-right {
+  display: flex;
+  align-items: center;
+}
+
+.hud-right {
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.hud-logo-block {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hud-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--army-glow);
+  text-shadow: 0 0 10px rgba(181, 212, 119, 0.5);
+}
+
+.hud-subtitle {
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+
+.hud-clock {
+  text-align: center;
+  padding: 4px 20px;
+  border-left: 1px solid var(--border-soft);
+  border-right: 1px solid var(--border-soft);
+}
+
+.hud-clock-time {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--army-glow);
+  letter-spacing: 3px;
+  text-shadow: 0 0 8px rgba(181, 212, 119, 0.4);
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-clock-date {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  margin-top: 2px;
+}
+
+.hud-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border: 1px solid var(--army-mid);
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--army-glow);
+  background: rgba(107, 142, 35, 0.1);
+}
+
+.hud-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--army-light);
+  box-shadow: 0 0 8px var(--army-light);
+  animation: hud-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes hud-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.85); }
+}
+
+.hud-logout {
+  font-size: 11px;
+  padding: 6px 12px;
+  color: var(--amber);
+  border-color: rgba(212, 162, 76, 0.5);
+}
+
+.hud-logout:hover {
+  background: rgba(212, 162, 76, 0.15);
+  border-color: var(--amber);
+  box-shadow: 0 0 12px rgba(212, 162, 76, 0.4);
+}
+
+/* ============================================================
+   Strategic Map (Layer 1)
+   ============================================================ */
+
+.sm-root {
+  flex: 1 1 auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 24px 18px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.sm-gridbg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+  opacity: 0.6;
+}
+
+.sm-status-bar {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 24px;
+  padding: 6px 12px;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+  border: 1px solid var(--border-soft);
+  background: rgba(18, 28, 12, 0.6);
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.sm-status-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sm-status-error {
+  color: var(--critical);
+}
+
+.sm-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--army-light);
+  box-shadow: 0 0 6px var(--army-light);
+  animation: hud-pulse 1.5s ease-in-out infinite;
+}
+
+.sm-squads {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.sm-loading {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--army-glow);
+  letter-spacing: 4px;
+  font-size: 14px;
+}
+
+.sm-loading-inner {
+  position: relative;
+  padding: 20px 40px;
+  border: 1px solid var(--border-mid);
+  overflow: hidden;
+}
+
+.sm-scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--army-light), transparent);
+  animation: sm-scan 2s linear infinite;
+}
+
+@keyframes sm-scan {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+/* ============================================================
+   Squad Panel
+   ============================================================ */
+
+.sq-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: linear-gradient(180deg, rgba(18, 28, 12, 0.7) 0%, rgba(13, 20, 9, 0.9) 100%);
+  border: 1px solid var(--sq-primary);
+  padding: 12px 14px 14px;
+  position: relative;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 18px) 0,
+    100% 18px,
+    100% 100%,
+    18px 100%,
+    0 calc(100% - 18px)
+  );
+}
+
+.sq-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--sq-accent) 0%, transparent 60%);
+  opacity: 0.8;
+}
+
+.sq-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.sq-header-bar {
+  width: 4px;
+  height: 24px;
+  background: var(--sq-accent);
+  box-shadow: 0 0 10px var(--sq-accent);
+}
+
+.sq-title {
+  font-size: 16px;
+  letter-spacing: 4px;
+  color: var(--sq-accent);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--sq-accent) 60%, transparent);
+}
+
+.sq-meta {
+  margin-left: auto;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+}
+
+.sq-captain-slot {
+  margin-bottom: 12px;
+  flex: 0 0 auto;
+}
+
+.sq-members-grid {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  min-height: 0;
+}
+
+/* ============================================================
+   Tactic Card (member + captain)
+   ============================================================ */
+
+.tc-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, rgba(26, 38, 16, 0.85) 0%, rgba(13, 20, 9, 0.95) 100%);
+  border: 1px solid var(--tc-border);
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.4),
+    0 0 14px color-mix(in srgb, var(--tc-glow) 30%, transparent);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.tc-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.4),
+    0 0 22px color-mix(in srgb, var(--tc-glow) 60%, transparent);
+}
+
+.tc-corner {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--tc-glow);
+  pointer-events: none;
+}
+
+.tc-tl { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+.tc-tr { top: -1px; right: -1px; border-left: none; border-bottom: none; }
+.tc-bl { bottom: -1px; left: -1px; border-right: none; border-top: none; }
+.tc-br { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+.tc-captain {
+  padding: 14px 18px;
+  background: linear-gradient(180deg, rgba(42, 56, 22, 0.9) 0%, rgba(20, 30, 12, 0.95) 100%);
+}
+
+.tc-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.tc-id {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.tc-role {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--text-dim);
+}
+
+.tc-name {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--text);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tc-captain .tc-name {
+  font-size: 20px;
+}
+
+.tc-alert {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  margin-top: 3px;
+}
+
+.tc-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+  padding: 6px 0;
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.tc-stat {
+  text-align: center;
+}
+
+.tc-stat-label {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+}
+
+.tc-stat-value {
+  font-size: 18px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+
+.tc-captain .tc-stat-value {
+  font-size: 22px;
+}
+
+.tc-ecg {
+  margin-top: 6px;
+  height: 36px;
+  opacity: 0.9;
+}
+
+/* ============================================================
+   Login form (desktop tactical tweaks)
+   ============================================================ */
+
+.app-desktop .container {
+  max-width: 420px;
+  margin: 80px auto;
 }
