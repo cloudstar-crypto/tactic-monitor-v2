@@ -86,12 +86,12 @@ function HeartbeatChart({ width = 240, height = 40, alertLevel = 'NORMAL' }) {
       style={{ display: 'block', overflow: 'hidden' }}
     >
       <defs>
-        {/* Grid gradient mask — fade edges so scroll loop isn't obvious */}
+        {/* Edge-fade mask. SVG masks use luminance: white = visible, black = hidden. */}
         <linearGradient id={`ecg-fade-${uid}`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#000" stopOpacity="0" />
-          <stop offset="10%" stopColor="#000" stopOpacity="1" />
-          <stop offset="90%" stopColor="#000" stopOpacity="1" />
-          <stop offset="100%" stopColor="#000" stopOpacity="0" />
+          <stop offset="0%" stopColor="#000" />
+          <stop offset="8%" stopColor="#fff" />
+          <stop offset="92%" stopColor="#fff" />
+          <stop offset="100%" stopColor="#000" />
         </linearGradient>
         <mask id={`ecg-mask-${uid}`}>
           <rect width={VB_W} height={VB_H} fill={`url(#ecg-fade-${uid})`} />
