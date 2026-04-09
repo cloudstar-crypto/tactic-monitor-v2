@@ -1,81 +1,121 @@
-import { memo, useId } from 'react';
+import { memo, useId, useMemo } from 'react';
 
 /*
   Realistic ECG-style heartbeat chart.
-  Path is a PQRST waveform repeated twice across the viewBox and
-  scrolled horizontally via transform. The viewport shows half
-  the path at any given time, giving an infinite scroll effect.
+  Each card receives a `seed` (engineer name); a small mulberry32 PRNG
+  produces deterministic per-cycle variations (±15% amplitude, tiny
+  baseline drift) so every member has a unique but stable waveform.
+  The path loops seamlessly: cycle[0] == cycle[N] (same parameters), so
+  translating by one cycle width yields a flawless repeat.
 */
 
-// Build one PQRST cycle starting at x0, baseline y.
-// Cycle width ~180 units. Amplitude scales with `amp`.
-function buildPQRST(x0, y, amp) {
-  const p = amp * 0.25;   // P wave height
-  const q = amp * 0.15;   // Q dip
-  const r = amp * 1.0;    // R spike height
-  const s = amp * 0.55;   // S dip depth
-  const t = amp * 0.35;   // T wave height
+// --- Deterministic PRNG helpers ----------------------------------------
+
+function hashString(str) {
+  let h = 2166136261 >>> 0; // FNV-1a 32-bit
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+
+function mulberry32(a) {
+  return function () {
+    a |= 0;
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// Pick a number in [min, max] from rng.
+function pick(rng, min, max) {
+  return min + rng() * (max - min);
+}
+
+// --- Path building ------------------------------------------------------
+
+// Build one PQRST cycle starting at x0, with per-wave scale factors.
+// Cycle width stays exactly 180 units so the repeat is pixel-perfect.
+function buildPQRST(x0, y, baseAmp, factors) {
+  const { rScale, tScale, qScale, sScale, pScale, baselineShift } = factors;
+  const yb = y + baselineShift;
+
+  const p = baseAmp * 0.25 * pScale;
+  const q = baseAmp * 0.15 * qScale;
+  const r = baseAmp * 1.0 * rScale;
+  const s = baseAmp * 0.55 * sScale;
+  const t = baseAmp * 0.35 * tScale;
 
   return [
-    `M ${x0} ${y}`,
-    `L ${x0 + 14} ${y}`,
-    // P wave (gentle bump)
-    `Q ${x0 + 22} ${y - p * 2} ${x0 + 30} ${y}`,
-    `L ${x0 + 40} ${y}`,
+    `M ${x0} ${yb}`,
+    `L ${x0 + 14} ${yb}`,
+    // P wave
+    `Q ${x0 + 22} ${yb - p * 2} ${x0 + 30} ${yb}`,
+    `L ${x0 + 40} ${yb}`,
     // Q dip
-    `L ${x0 + 44} ${y + q}`,
+    `L ${x0 + 44} ${yb + q}`,
     // R spike
-    `L ${x0 + 48} ${y - r}`,
+    `L ${x0 + 48} ${yb - r}`,
     // S down
-    `L ${x0 + 52} ${y + s}`,
-    // Return to baseline
-    `L ${x0 + 58} ${y}`,
-    `L ${x0 + 72} ${y}`,
-    // T wave (rounded)
-    `Q ${x0 + 86} ${y - t * 1.5} ${x0 + 100} ${y}`,
-    `L ${x0 + 180} ${y}`,
+    `L ${x0 + 52} ${yb + s}`,
+    // Back to baseline
+    `L ${x0 + 58} ${yb}`,
+    `L ${x0 + 72} ${yb}`,
+    // T wave
+    `Q ${x0 + 86} ${yb - t * 1.5} ${x0 + 100} ${yb}`,
+    `L ${x0 + 180} ${y}`, // land on the true baseline so the next cycle stitches cleanly
   ].join(' ');
 }
 
-function HeartbeatChart({ width = '100%', height = '100%', alertLevel = 'NORMAL' }) {
+// Build a full multi-cycle path. First and last cycles share factors so
+// the loop is seamless.
+function buildSeamlessPath(seedStr, baseline, baseAmp, cycleWidth, numCycles) {
+  const rng = mulberry32(hashString(seedStr || 'tactic'));
+
+  const makeFactors = () => ({
+    rScale: pick(rng, 0.85, 1.15),
+    tScale: pick(rng, 0.75, 1.25),
+    qScale: pick(rng, 0.9, 1.1),
+    sScale: pick(rng, 0.9, 1.1),
+    pScale: pick(rng, 0.85, 1.15),
+    baselineShift: pick(rng, -0.6, 0.6),
+  });
+
+  const factorsList = [];
+  for (let i = 0; i < numCycles; i++) factorsList.push(makeFactors());
+  // Force the final cycle to match the first so the loop is seamless.
+  factorsList[numCycles - 1] = factorsList[0];
+
+  return factorsList
+    .map((f, i) => buildPQRST(i * cycleWidth, baseline, baseAmp, f))
+    .join(' ');
+}
+
+// --- Component ----------------------------------------------------------
+
+function HeartbeatChart({ width = '100%', height = '100%', alertLevel = 'NORMAL', seed = '' }) {
   const uid = useId().replace(/:/g, '_');
 
   const config = {
-    NORMAL: {
-      color: '#8fae5f',
-      glow: '#b5d477',
-      duration: '2.4s',
-      amp: 16,
-    },
-    WARNING: {
-      color: '#e8c547',
-      glow: '#ffd966',
-      duration: '1.3s',
-      amp: 18,
-    },
-    CRITICAL: {
-      color: '#e74c3c',
-      glow: '#ff6b5b',
-      duration: '0.65s',
-      amp: 22,
-    },
-  }[alertLevel] || {
-    color: '#8fae5f',
-    glow: '#b5d477',
-    duration: '2.4s',
-    amp: 16,
-  };
+    NORMAL: { color: '#8fae5f', glow: '#b5d477', duration: '2.4s', amp: 16 },
+    WARNING: { color: '#e8c547', glow: '#ffd966', duration: '1.3s', amp: 18 },
+    CRITICAL: { color: '#e74c3c', glow: '#ff6b5b', duration: '0.65s', amp: 22 },
+  }[alertLevel] || { color: '#8fae5f', glow: '#b5d477', duration: '2.4s', amp: 16 };
 
-  const VB_W = 360;          // inner viewBox width shown at once
+  const VB_W = 360;
   const VB_H = 48;
-  const baseline = VB_H / 2; // y=24
+  const baseline = VB_H / 2;
   const cycleWidth = 180;
+  const numCycles = 4; // path spans 4 * 180 = 720 units (> 2 viewports)
 
-  // Build three cycles so translating one cycle width creates seamless loop
-  const path =
-    buildPQRST(0, baseline, config.amp) + ' ' +
-    buildPQRST(cycleWidth, baseline, config.amp) + ' ' +
-    buildPQRST(cycleWidth * 2, baseline, config.amp);
+  // Per-card waveform, stable across re-renders via useMemo keyed on seed+level.
+  const path = useMemo(
+    () => buildSeamlessPath(`${seed}|${alertLevel}`, baseline, config.amp, cycleWidth, numCycles),
+    [seed, alertLevel, config.amp],
+  );
 
   return (
     <svg
@@ -105,7 +145,7 @@ function HeartbeatChart({ width = '100%', height = '100%', alertLevel = 'NORMAL'
         ))}
       </g>
 
-      {/* Scrolling waveform — seamless left-to-right across full card width */}
+      {/* Scrolling waveform — seamless loop across full card width */}
       <g>
         <path
           d={path}

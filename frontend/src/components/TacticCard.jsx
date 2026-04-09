@@ -56,7 +56,7 @@ function TacticCard({ data, variant = 'member' }) {
             <StatBox label="DONE" value={done} highlight="#6b8e23" />
           </div>
           <div className="tc-ecg">
-            <HeartbeatChart alertLevel={alertLevel} />
+            <HeartbeatChart alertLevel={alertLevel} seed={`captain:${name || ''}`} />
           </div>
         </div>
       </div>
@@ -100,7 +100,7 @@ function TacticCard({ data, variant = 'member' }) {
       </div>
 
       <div className="tc-ecg">
-        <HeartbeatChart alertLevel={alertLevel} />
+        <HeartbeatChart alertLevel={alertLevel} seed={`member:${name || ''}`} />
       </div>
     </div>
   );
