@@ -37,7 +37,7 @@ function buildPQRST(x0, y, amp) {
   ].join(' ');
 }
 
-function HeartbeatChart({ width = 240, height = 40, alertLevel = 'NORMAL' }) {
+function HeartbeatChart({ width = '100%', height = '100%', alertLevel = 'NORMAL' }) {
   const uid = useId().replace(/:/g, '_');
 
   const config = {

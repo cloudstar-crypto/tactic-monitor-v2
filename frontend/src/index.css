@@ -600,8 +600,14 @@ input {
 .tc-ecg {
   margin-top: 4px;
   height: 26px;
+  width: 100%;
   opacity: 0.9;
   flex: 0 0 auto;
+}
+.tc-ecg svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 /* ============================================================
