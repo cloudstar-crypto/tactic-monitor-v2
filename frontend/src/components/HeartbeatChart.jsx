@@ -37,10 +37,18 @@ function pick(rng, min, max) {
 
 // --- Path building ------------------------------------------------------
 
-// Build one PQRST cycle starting at x0, with per-wave scale factors.
-// Cycle width stays exactly 180 units so the repeat is pixel-perfect.
+// Build one PQRST cycle starting at x0. All feature positions, amplitudes
+// and baseline noise come from the `factors` bundle. Cycle width stays 180
+// units so the outer loop stitches pixel-perfectly as long as the first and
+// last factors match.
 function buildPQRST(x0, y, baseAmp, factors) {
-  const { rScale, tScale, qScale, sScale, pScale, baselineShift } = factors;
+  const {
+    rScale, tScale, qScale, sScale, pScale,
+    baselineShift,
+    pStart, rCenter, tCenter,
+    noise, // array of {x, dy} baseline wiggle points
+  } = factors;
+
   const yb = y + baselineShift;
 
   const p = baseAmp * 0.25 * pScale;
@@ -49,25 +57,37 @@ function buildPQRST(x0, y, baseAmp, factors) {
   const s = baseAmp * 0.55 * sScale;
   const t = baseAmp * 0.35 * tScale;
 
+  // Noise points that land on the quiet segments (before P, between T and end).
+  const leadingNoise = noise
+    .filter((n) => n.x < pStart - 2)
+    .map((n) => `L ${x0 + n.x} ${yb + n.dy}`)
+    .join(' ');
+  const trailingNoise = noise
+    .filter((n) => n.x > tCenter + 20 && n.x < 176)
+    .map((n) => `L ${x0 + n.x} ${yb + n.dy}`)
+    .join(' ');
+
   return [
     `M ${x0} ${yb}`,
-    `L ${x0 + 14} ${yb}`,
-    // P wave
-    `Q ${x0 + 22} ${yb - p * 2} ${x0 + 30} ${yb}`,
-    `L ${x0 + 40} ${yb}`,
+    leadingNoise,
+    `L ${x0 + pStart} ${yb}`,
+    // P wave (rounded bump)
+    `Q ${x0 + pStart + 8} ${yb - p * 2} ${x0 + pStart + 16} ${yb}`,
+    `L ${x0 + rCenter - 8} ${yb}`,
     // Q dip
-    `L ${x0 + 44} ${yb + q}`,
+    `L ${x0 + rCenter - 4} ${yb + q}`,
     // R spike
-    `L ${x0 + 48} ${yb - r}`,
+    `L ${x0 + rCenter} ${yb - r}`,
     // S down
-    `L ${x0 + 52} ${yb + s}`,
+    `L ${x0 + rCenter + 4} ${yb + s}`,
     // Back to baseline
-    `L ${x0 + 58} ${yb}`,
-    `L ${x0 + 72} ${yb}`,
+    `L ${x0 + rCenter + 10} ${yb}`,
+    `L ${x0 + tCenter - 14} ${yb}`,
     // T wave
-    `Q ${x0 + 86} ${yb - t * 1.5} ${x0 + 100} ${yb}`,
-    `L ${x0 + 180} ${y}`, // land on the true baseline so the next cycle stitches cleanly
-  ].join(' ');
+    `Q ${x0 + tCenter} ${yb - t * 1.5} ${x0 + tCenter + 14} ${yb}`,
+    trailingNoise,
+    `L ${x0 + 180} ${y}`, // return to true baseline so neighbouring cycles stitch
+  ].filter(Boolean).join(' ');
 }
 
 // Build a full multi-cycle path. First and last cycles share factors so
@@ -76,12 +96,20 @@ function buildSeamlessPath(seedStr, baseline, baseAmp, cycleWidth, numCycles) {
   const rng = mulberry32(hashString(seedStr || 'tactic'));
 
   const makeFactors = () => ({
-    rScale: pick(rng, 0.85, 1.15),
-    tScale: pick(rng, 0.75, 1.25),
-    qScale: pick(rng, 0.9, 1.1),
-    sScale: pick(rng, 0.9, 1.1),
-    pScale: pick(rng, 0.85, 1.15),
-    baselineShift: pick(rng, -0.6, 0.6),
+    rScale: pick(rng, 0.6, 1.4),
+    tScale: pick(rng, 0.5, 1.5),
+    qScale: pick(rng, 0.7, 1.3),
+    sScale: pick(rng, 0.7, 1.3),
+    pScale: pick(rng, 0.6, 1.4),
+    baselineShift: pick(rng, -3, 3),
+    pStart: pick(rng, 10, 18),
+    rCenter: pick(rng, 44, 52),
+    tCenter: pick(rng, 80, 92),
+    noise: [
+      { x: pick(rng, 2, 8), dy: pick(rng, -1.5, 1.5) },
+      { x: pick(rng, 108, 130), dy: pick(rng, -1.5, 1.5) },
+      { x: pick(rng, 140, 170), dy: pick(rng, -1.5, 1.5) },
+    ],
   });
 
   const factorsList = [];
