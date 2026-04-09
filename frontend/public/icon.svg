@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Tactic Monitor">
+  <title>Tactic Monitor</title>
+  <defs>
+    <radialGradient id="tm-bg" cx="50%" cy="38%" r="80%">
+      <stop offset="0%" stop-color="#1a2610"/>
+      <stop offset="55%" stop-color="#0d1409"/>
+      <stop offset="100%" stop-color="#050803"/>
+    </radialGradient>
+    <linearGradient id="tm-hex" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#2d3817"/>
+      <stop offset="100%" stop-color="#121c0c"/>
+    </linearGradient>
+    <filter id="tm-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- rounded background -->
+  <rect width="512" height="512" rx="96" ry="96" fill="url(#tm-bg)"/>
+
+  <!-- subtle grid overlay -->
+  <g stroke="#8fae5f" stroke-width="1" opacity="0.08">
+    <line x1="0" y1="128" x2="512" y2="128"/>
+    <line x1="0" y1="256" x2="512" y2="256"/>
+    <line x1="0" y1="384" x2="512" y2="384"/>
+    <line x1="128" y1="0" x2="128" y2="512"/>
+    <line x1="256" y1="0" x2="256" y2="512"/>
+    <line x1="384" y1="0" x2="384" y2="512"/>
+  </g>
+
+  <!-- outer hexagon ring (faint halo) -->
+  <polygon points="256,56 432,152 432,360 256,456 80,360 80,152"
+           fill="none" stroke="#4a5d23" stroke-width="3" opacity="0.55"/>
+
+  <!-- main outer hexagon -->
+  <polygon points="256,80 416,164 416,348 256,432 96,348 96,164"
+           fill="none" stroke="#8fae5f" stroke-width="9" stroke-linejoin="round"
+           filter="url(#tm-glow)"/>
+
+  <!-- inner hexagon plate -->
+  <polygon points="256,136 368,192 368,320 256,376 144,320 144,192"
+           fill="url(#tm-hex)" stroke="#b5d477" stroke-width="4" stroke-linejoin="round"/>
+
+  <!-- scope ring + center reticle -->
+  <circle cx="256" cy="256" r="34" fill="none" stroke="#b5d477" stroke-width="1.5" opacity="0.5"/>
+  <circle cx="256" cy="256" r="20" fill="none" stroke="#b5d477" stroke-width="2" opacity="0.8"/>
+  <circle cx="256" cy="256" r="9" fill="#b5d477" filter="url(#tm-glow)"/>
+
+  <!-- reticle cross -->
+  <g stroke="#b5d477" stroke-width="2" opacity="0.7" stroke-linecap="round">
+    <line x1="256" y1="212" x2="256" y2="228"/>
+    <line x1="256" y1="284" x2="256" y2="300"/>
+    <line x1="212" y1="256" x2="228" y2="256"/>
+    <line x1="284" y1="256" x2="300" y2="256"/>
+  </g>
+
+  <!-- corner tick marks -->
+  <g stroke="#8fae5f" stroke-width="5" stroke-linecap="round" opacity="0.85">
+    <line x1="44" y1="44" x2="44" y2="84"/>
+    <line x1="44" y1="44" x2="84" y2="44"/>
+    <line x1="468" y1="44" x2="468" y2="84"/>
+    <line x1="468" y1="44" x2="428" y2="44"/>
+    <line x1="44" y1="468" x2="44" y2="428"/>
+    <line x1="44" y1="468" x2="84" y2="468"/>
+    <line x1="468" y1="468" x2="468" y2="428"/>
+    <line x1="468" y1="468" x2="428" y2="468"/>
+  </g>
+</svg>
