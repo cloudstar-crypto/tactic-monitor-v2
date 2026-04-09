@@ -86,16 +86,6 @@ function HeartbeatChart({ width = 240, height = 40, alertLevel = 'NORMAL' }) {
       style={{ display: 'block', overflow: 'hidden' }}
     >
       <defs>
-        {/* Edge-fade mask. SVG masks use luminance: white = visible, black = hidden. */}
-        <linearGradient id={`ecg-fade-${uid}`} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#000" />
-          <stop offset="8%" stopColor="#fff" />
-          <stop offset="92%" stopColor="#fff" />
-          <stop offset="100%" stopColor="#000" />
-        </linearGradient>
-        <mask id={`ecg-mask-${uid}`}>
-          <rect width={VB_W} height={VB_H} fill={`url(#ecg-fade-${uid})`} />
-        </mask>
         <filter id={`ecg-glow-${uid}`} x="-20%" y="-50%" width="140%" height="200%">
           <feGaussianBlur stdDeviation="1.2" result="blur" />
           <feMerge>
@@ -115,28 +105,26 @@ function HeartbeatChart({ width = 240, height = 40, alertLevel = 'NORMAL' }) {
         ))}
       </g>
 
-      {/* Scrolling waveform */}
-      <g mask={`url(#ecg-mask-${uid})`}>
-        <g>
-          <path
-            d={path}
-            fill="none"
-            stroke={config.color}
-            strokeWidth="1.8"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            filter={`url(#ecg-glow-${uid})`}
-            opacity="0.95"
-          />
-          <animateTransform
-            attributeName="transform"
-            type="translate"
-            from={`${cycleWidth} 0`}
-            to="0 0"
-            dur={config.duration}
-            repeatCount="indefinite"
-          />
-        </g>
+      {/* Scrolling waveform — seamless left-to-right across full card width */}
+      <g>
+        <path
+          d={path}
+          fill="none"
+          stroke={config.color}
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+          filter={`url(#ecg-glow-${uid})`}
+          opacity="0.95"
+        />
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          from="0 0"
+          to={`-${cycleWidth} 0`}
+          dur={config.duration}
+          repeatCount="indefinite"
+        />
       </g>
     </svg>
   );
