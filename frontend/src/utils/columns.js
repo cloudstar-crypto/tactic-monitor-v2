@@ -37,25 +37,27 @@ export function displayName(key) {
 }
 
 // Default per-column widths in px. auto = flex-grow.
+// Order matters: longer/more-specific patterns must come before broader ones
+// because `find` returns the first match.
 const FIXED_WIDTHS = [
   { match: 'status', width: 110 },
   { match: 'customer', width: 100 },
   { match: 'car no', width: 70 },
   { match: 'pn', width: 140 },
   { match: 'last update', width: 200 },
-  { match: 'update date', width: 110 },
   { match: 'car open date', width: 100 },
+  // Update-date columns in non-main tabs only hold an 8-digit date, so
+  // keep them tight. This match also catches header variants like
+  // "Update Date", "Update_Date", "UpdateDate", or plain "Date".
+  { match: 'update', width: 95 },
+  { match: 'date', width: 95 },
 ];
 
 export function columnWidth(key) {
   if (!key) return null;
   const k = String(key).toLowerCase();
-  // date-like wide columns
   const hit = FIXED_WIDTHS.find((w) => k.includes(w.match));
-  if (hit) return hit.width;
-  // generic date fallback
-  if (k.includes('date') || k.includes('update')) return 200;
-  return null;
+  return hit ? hit.width : null;
 }
 
 // Determine if a row has any value across the visible columns for a tab.

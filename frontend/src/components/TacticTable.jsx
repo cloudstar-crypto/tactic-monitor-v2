@@ -21,10 +21,14 @@ function TacticTable({ rows, tab, onRowClick }) {
         keys.push(k);
       }
     }
-    // For non-main tabs, move "update date" to the rightmost slot so the
-    // (wider) content columns on the left get more room.
+    // For non-main tabs, move any update-date column to the rightmost slot
+    // so the (wider) content columns on the left get more room. Matches
+    // header variants like "Update Date", "UpdateDate", or plain "Date".
     if (tab !== 'main') {
-      const isUpdateDate = (k) => String(k).toLowerCase().includes('update date');
+      const isUpdateDate = (k) => {
+        const s = String(k).toLowerCase();
+        return s.includes('update') || s.includes('date');
+      };
       const dateCols = keys.filter(isUpdateDate);
       if (dateCols.length > 0) {
         return [...keys.filter((k) => !isUpdateDate(k)), ...dateCols];
