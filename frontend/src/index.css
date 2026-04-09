@@ -604,6 +604,9 @@ input {
   opacity: 0.9;
   flex: 0 0 auto;
 }
+.tc-member .tc-ecg {
+  margin-top: 8px;
+}
 .tc-ecg svg {
   display: block;
   width: 100%;
