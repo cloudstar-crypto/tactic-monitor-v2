@@ -144,6 +144,46 @@ function findEngineerSheet(sheetTitles, engineer) {
   return candidates.find((t) => t.toLowerCase().includes(lower));
 }
 
+// Find the 5 sheets belonging to an engineer, classified by tab key.
+// Returns: { main, report, fsr, rmReport, others } — values are sheet titles or null.
+function findEngineerSheetSet(sheetTitles, engineer) {
+  const lower = engineer.toLowerCase();
+  const candidates = sheetTitles.filter((t) => !isExcluded(t) && t.toLowerCase().includes(lower));
+
+  const result = { main: null, report: null, fsr: null, rmReport: null, others: null };
+
+  for (const title of candidates) {
+    const l = title.toLowerCase();
+    if (!result.rmReport && (l.includes('rmreport') || l.includes('rm_report') || l.includes('rm report') || (l.includes('rm') && l.includes('report')))) {
+      result.rmReport = title;
+      continue;
+    }
+    if (!result.report && l.includes('report')) {
+      result.report = title;
+      continue;
+    }
+    if (!result.fsr && (l.includes('fsr') || l.includes('fw_sw') || l.includes('fwsw') || l.includes('fw/sw'))) {
+      result.fsr = title;
+      continue;
+    }
+    if (!result.others && (l.includes('other'))) {
+      result.others = title;
+      continue;
+    }
+    if (!result.main && (l.includes('main') || l.includes('car'))) {
+      result.main = title;
+      continue;
+    }
+  }
+  // Fallback: if still no main found, use any remaining engineer sheet
+  if (!result.main) {
+    const used = new Set(Object.values(result).filter(Boolean));
+    const fallback = candidates.find((t) => !used.has(t));
+    if (fallback) result.main = fallback;
+  }
+  return result;
+}
+
 export async function getSheetData() {
   const sheetId = process.env.GOOGLE_SHEET_ID;
   if (!sheetId) throw new Error('Missing GOOGLE_SHEET_ID');
@@ -195,4 +235,55 @@ export async function getSheetData() {
     summary.sheetTitle = sheetTitle || null;
     return summary;
   });
+}
+
+// Fetch the full 5-tab dataset for a single engineer.
+// Returns: { name, main, report, fsr, rmReport, others } where each tab is an array of row objects.
+export async function getEngineerDetail(name) {
+  const sheetId = process.env.GOOGLE_SHEET_ID;
+  if (!sheetId) throw new Error('Missing GOOGLE_SHEET_ID');
+  if (!name) throw new Error('Missing engineer name');
+
+  const auth = getAuth();
+  const sheets = google.sheets({ version: 'v4', auth });
+
+  let meta;
+  try {
+    meta = await sheets.spreadsheets.get({
+      spreadsheetId: sheetId,
+      fields: 'sheets.properties.title',
+    });
+  } catch (err) {
+    throw new Error(`Google Sheets metadata error: ${err.message}`);
+  }
+  const sheetTitles = (meta.data.sheets || []).map((s) => s.properties.title);
+
+  const sheetSet = findEngineerSheetSet(sheetTitles, name);
+  const tabKeys = ['main', 'report', 'fsr', 'rmReport', 'others'];
+
+  const toFetch = tabKeys
+    .map((key) => ({ key, title: sheetSet[key] }))
+    .filter((t) => t.title);
+  const ranges = toFetch.map((t) => `'${t.title}'!A1:Z500`);
+
+  let response = { data: { valueRanges: [] } };
+  if (ranges.length > 0) {
+    try {
+      response = await sheets.spreadsheets.values.batchGet({
+        spreadsheetId: sheetId,
+        ranges,
+      });
+    } catch (err) {
+      throw new Error(`Google Sheets values error: ${err.message}`);
+    }
+  }
+
+  const valueRanges = response.data.valueRanges || [];
+  const result = { name, main: [], report: [], fsr: [], rmReport: [], others: [] };
+  toFetch.forEach((t, i) => {
+    const values = valueRanges[i]?.values || [];
+    result[t.key] = rowsToObjects(values);
+  });
+
+  return result;
 }

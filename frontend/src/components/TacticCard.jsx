@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import SkullMarineAvatar from './SkullMarineAvatar';
 import HeartbeatChart from './HeartbeatChart';
 
@@ -20,9 +21,11 @@ function StatBox({ label, value, highlight }) {
 }
 
 function TacticCard({ data, variant = 'member' }) {
+  const navigate = useNavigate();
   const { name, role, all = 0, active = 0, pending = 0, done = 0, alertLevel = 'NORMAL' } = data || {};
   const colors = ALERT_COLORS[alertLevel] || ALERT_COLORS.NORMAL;
   const isCaptain = variant === 'captain';
+  const handleClick = !isCaptain && name ? () => navigate(`/squad/${encodeURIComponent(name)}`) : undefined;
 
   if (isCaptain) {
     // Horizontal layout: identity on left, stats + ecg on right
@@ -62,8 +65,12 @@ function TacticCard({ data, variant = 'member' }) {
 
   return (
     <div
-      className={`tc-card tc-member tc-alert-${alertLevel}`}
+      className={`tc-card tc-member tc-clickable tc-alert-${alertLevel}`}
       style={{ '--tc-border': colors.border, '--tc-glow': colors.glow }}
+      onClick={handleClick}
+      role={handleClick ? 'button' : undefined}
+      tabIndex={handleClick ? 0 : undefined}
+      onKeyDown={handleClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } } : undefined}
     >
       <span className="tc-corner tc-tl" />
       <span className="tc-corner tc-tr" />

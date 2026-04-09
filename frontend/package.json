@@ -10,7 +10,8 @@
   "dependencies": {
     "googleapis": "^144.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.26.0"
   },
   "devDependencies": {
     "vite": "^5.0.0",

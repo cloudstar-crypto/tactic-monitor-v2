@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import LoginForm from './components/LoginForm';
 import Dashboard from './components/Dashboard';
 import StrategicMap from './components/StrategicMap';
+import SquadDetail from './components/SquadDetail';
 import { useIsMobile } from './hooks/useIsMobile';
 
 function App() {
@@ -16,7 +18,8 @@ function App() {
     setLoading(false);
   }, []);
 
-  // Toggle body scroll lock: desktop layer 1 must NOT scroll, mobile must.
+  // Toggle body scroll lock: desktop must not scroll at body level (layers
+  // manage their own internal scrolling); mobile keeps body scrollable.
   useEffect(() => {
     if (!isAuthenticated) {
       document.body.style.overflow = '';
@@ -54,11 +57,15 @@ function App() {
     );
   }
 
-  // Desktop Layer 1
+  // Desktop — routed
   return (
     <div className="app app-desktop">
       <Header isAuthenticated={true} onLogout={handleLogout} variant="desktop" />
-      <StrategicMap />
+      <Routes>
+        <Route path="/" element={<StrategicMap />} />
+        <Route path="/squad/:name" element={<SquadDetail />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
     </div>
   );
 }
