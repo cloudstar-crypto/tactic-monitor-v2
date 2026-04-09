@@ -43,7 +43,7 @@ const FIXED_WIDTHS = [
   { match: 'car no', width: 70 },
   { match: 'pn', width: 140 },
   { match: 'last update', width: 200 },
-  { match: 'update date', width: 200 },
+  { match: 'update date', width: 110 },
   { match: 'car open date', width: 100 },
 ];
 

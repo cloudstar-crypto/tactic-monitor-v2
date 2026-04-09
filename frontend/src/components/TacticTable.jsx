@@ -21,6 +21,15 @@ function TacticTable({ rows, tab, onRowClick }) {
         keys.push(k);
       }
     }
+    // For non-main tabs, move "update date" to the rightmost slot so the
+    // (wider) content columns on the left get more room.
+    if (tab !== 'main') {
+      const isUpdateDate = (k) => String(k).toLowerCase().includes('update date');
+      const dateCols = keys.filter(isUpdateDate);
+      if (dateCols.length > 0) {
+        return [...keys.filter((k) => !isUpdateDate(k)), ...dateCols];
+      }
+    }
     return keys;
   }, [visibleRows, tab]);
 
