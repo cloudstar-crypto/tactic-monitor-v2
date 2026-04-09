@@ -2,11 +2,12 @@ import { memo, useId, useMemo } from 'react';
 
 /*
   Realistic ECG-style heartbeat chart.
-  Each card receives a `seed` (engineer name); a small mulberry32 PRNG
-  produces deterministic per-cycle variations (±15% amplitude, tiny
-  baseline drift) so every member has a unique but stable waveform.
-  The path loops seamlessly: cycle[0] == cycle[N] (same parameters), so
-  translating by one cycle width yields a flawless repeat.
+  Each card receives a `seed` (engineer name); a mulberry32 PRNG produces
+  deterministic per-cycle variations — ±40% amplitude on P/R/T waves,
+  ±3 baseline drift, randomised P/R/T timing offsets, and in-cycle
+  baseline noise — so every operative has a visibly unique but stable
+  waveform. The path loops seamlessly: cycle[0] == cycle[N] (same
+  factors), so translating by one cycle width yields a flawless repeat.
 */
 
 // --- Deterministic PRNG helpers ----------------------------------------

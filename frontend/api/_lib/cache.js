@@ -20,11 +20,3 @@ export function setCachedData(key, data) {
     expireAt: Date.now() + CACHE_DURATION,
   });
 }
-
-export function clearCache(key) {
-  if (key) {
-    cache.delete(key);
-  } else {
-    cache.clear();
-  }
-}

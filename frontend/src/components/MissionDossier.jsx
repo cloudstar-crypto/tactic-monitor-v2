@@ -12,7 +12,6 @@ function findKeyByMatch(obj, match) {
 
 function MissionDossier({ row, engineerName, squadName, onBack }) {
   const carNoKey = findKeyByMatch(row, 'car no');
-  const historyKey = findKeyByMatch(row, 'history');
   const carNo = carNoKey ? row[carNoKey] : '';
 
   const alerts = useMemo(() => getRowAlerts(row), [row]);

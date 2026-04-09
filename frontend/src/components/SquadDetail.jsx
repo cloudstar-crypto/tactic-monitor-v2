@@ -36,10 +36,15 @@ function SquadDetail() {
     [tabRows, activeTab],
   );
 
-  const tabCount = (key) => {
-    const arr = data?.[key] || [];
-    return arr.filter((r) => rowHasVisibleContent(r, key)).length;
-  };
+  // Pre-compute counts for all tabs once per data refresh.
+  const tabCounts = useMemo(() => {
+    const out = {};
+    for (const t of TABS) {
+      const arr = data?.[t.key] || [];
+      out[t.key] = arr.filter((r) => rowHasVisibleContent(r, t.key)).length;
+    }
+    return out;
+  }, [data]);
 
   const handleRowClick = (idx) => {
     setSearchParams({ row: String(idx) });
@@ -88,7 +93,7 @@ function SquadDetail() {
 
       <nav className="sd-tabs">
         {TABS.map((t) => {
-          const count = data ? tabCount(t.key) : 0;
+          const count = tabCounts[t.key] || 0;
           const active = activeTab === t.key;
           return (
             <button
