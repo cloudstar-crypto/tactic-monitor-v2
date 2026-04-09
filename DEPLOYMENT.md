@@ -1,7 +1,7 @@
 # TACTIC MONITOR V2 — Vercel 部署指南
 
 ## 1. 在 Vercel 連結 GitHub
-前往 Vercel Dashboard → Add Project → 選擇 cloudstar-crypto/tactic-monitorV2
+前往 Vercel Dashboard → Add Project → 選擇 cloudstar-crypto/tactic-monitor-v2
 
 ## 2. 設定部署
 - Root Directory: frontend
