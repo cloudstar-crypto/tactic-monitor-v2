@@ -325,7 +325,7 @@ input {
   display: flex;
   gap: 24px;
   padding: 6px 12px;
-  font-size: clamp(9px, 0.69vw, 14px);
+  font-size: clamp(9px, 0.69vw, 18px);
   letter-spacing: 2px;
   color: var(--text-dim);
   border: 1px solid var(--border-soft);
