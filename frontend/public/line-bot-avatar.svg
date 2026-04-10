@@ -1,52 +1,56 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="Tactic Monitor LINE Bot">
-  <title>Tactic Monitor LINE Bot</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="Tactic Monitor Captain">
+  <title>Tactic Monitor – Captain Skull Marine</title>
   <defs>
-    <radialGradient id="lb-bg" cx="50%" cy="42%" r="72%">
-      <stop offset="0%" stop-color="#1e2d12"/>
-      <stop offset="50%" stop-color="#0f1a0a"/>
-      <stop offset="100%" stop-color="#060a03"/>
+    <radialGradient id="ca-bg" cx="50%" cy="40%" r="72%">
+      <stop offset="0%" stop-color="#1a2210"/>
+      <stop offset="60%" stop-color="#0d1409"/>
+      <stop offset="100%" stop-color="#050803"/>
     </radialGradient>
-    <linearGradient id="lb-hex" x1="50%" y1="0%" x2="50%" y2="100%">
+    <linearGradient id="ca-helmet" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#3a4a1e"/>
+      <stop offset="60%" stop-color="#2d3817"/>
+      <stop offset="100%" stop-color="#1a2210"/>
+    </linearGradient>
+    <linearGradient id="ca-neck" x1="50%" y1="0%" x2="50%" y2="100%">
       <stop offset="0%" stop-color="#2d3817"/>
-      <stop offset="100%" stop-color="#121c0c"/>
+      <stop offset="100%" stop-color="#1a2210"/>
     </linearGradient>
-    <linearGradient id="lb-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+    <radialGradient id="ca-eye-glow" cx="50%" cy="50%" r="60%">
       <stop offset="0%" stop-color="#b5d477"/>
-      <stop offset="100%" stop-color="#6b8e23"/>
-    </linearGradient>
-    <radialGradient id="lb-core-glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#b5d477" stop-opacity="0.9"/>
-      <stop offset="60%" stop-color="#8fae5f" stop-opacity="0.4"/>
+      <stop offset="50%" stop-color="#8fae5f"/>
       <stop offset="100%" stop-color="#6b8e23" stop-opacity="0"/>
     </radialGradient>
-    <filter id="lb-glow" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="6" result="blur"/>
+    <filter id="ca-glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <filter id="lb-glow-strong" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="12" result="blur"/>
+    <filter id="ca-glow-lg" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="10" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
       </feMerge>
     </filter>
-    <filter id="lb-shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#b5d477" flood-opacity="0.3"/>
+    <filter id="ca-eye-filter" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
     </filter>
-    <!-- clip to circle for LINE avatar -->
-    <clipPath id="lb-circle-clip">
-      <circle cx="320" cy="320" r="320"/>
-    </clipPath>
+    <filter id="ca-shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
   </defs>
 
-  <!-- circular background (LINE crops to circle) -->
-  <circle cx="320" cy="320" r="320" fill="url(#lb-bg)"/>
+  <!-- Circular background -->
+  <circle cx="320" cy="320" r="320" fill="url(#ca-bg)"/>
 
-  <!-- subtle scan lines -->
-  <g opacity="0.04" stroke="#8fae5f" stroke-width="1">
+  <!-- Subtle scan lines -->
+  <g opacity="0.035" stroke="#8fae5f" stroke-width="1">
     <line x1="0" y1="80" x2="640" y2="80"/>
     <line x1="0" y1="160" x2="640" y2="160"/>
     <line x1="0" y1="240" x2="640" y2="240"/>
@@ -56,98 +60,161 @@
     <line x1="0" y1="560" x2="640" y2="560"/>
   </g>
 
-  <!-- radial grid (subtle) -->
-  <circle cx="320" cy="320" r="280" fill="none" stroke="#8fae5f" stroke-width="0.5" opacity="0.06"/>
-  <circle cx="320" cy="320" r="200" fill="none" stroke="#8fae5f" stroke-width="0.5" opacity="0.08"/>
-  <circle cx="320" cy="320" r="120" fill="none" stroke="#8fae5f" stroke-width="0.5" opacity="0.10"/>
+  <!-- Hex frame outer (faint halo) -->
+  <polygon points="320,38 578,175 578,465 320,602 62,465 62,175"
+           fill="none" stroke="#4a5d23" stroke-width="2" opacity="0.35"/>
 
-  <!-- outer hexagon halo (faint) -->
-  <polygon points="320,68 538,194 538,446 320,572 102,446 102,194"
-           fill="none" stroke="#4a5d23" stroke-width="2.5" opacity="0.4"/>
+  <!-- Hex frame main -->
+  <polygon points="320,56 564,185 564,455 320,584 76,455 76,185"
+           fill="none" stroke="#8fae5f" stroke-width="3" stroke-linejoin="round"
+           filter="url(#ca-glow)" opacity="0.6"/>
 
-  <!-- main hexagon border -->
-  <polygon points="320,95 518,210 518,430 320,545 122,430 122,210"
-           fill="none" stroke="#8fae5f" stroke-width="8" stroke-linejoin="round"
-           filter="url(#lb-glow)" opacity="0.9"/>
-
-  <!-- inner hexagon plate -->
-  <polygon points="320,155 430,218 430,422 320,485 210,422 210,218"
-           fill="url(#lb-hex)" stroke="#6b8e23" stroke-width="3" stroke-linejoin="round"
-           opacity="0.85"/>
-
-  <!-- inner hex accent border -->
-  <polygon points="320,170 418,228 418,412 320,470 222,412 222,228"
-           fill="none" stroke="#b5d477" stroke-width="1.5" stroke-linejoin="round"
+  <!-- Hex frame inner accent -->
+  <polygon points="320,72 548,195 548,445 320,568 92,445 92,195"
+           fill="none" stroke="#6b8e23" stroke-width="1" stroke-linejoin="round"
            opacity="0.3"/>
 
-  <!-- scope rings -->
-  <circle cx="320" cy="320" r="90" fill="none" stroke="#8fae5f" stroke-width="1" opacity="0.25"/>
-  <circle cx="320" cy="320" r="60" fill="none" stroke="#b5d477" stroke-width="1.5" opacity="0.4"/>
-  <circle cx="320" cy="320" r="36" fill="none" stroke="#b5d477" stroke-width="2" opacity="0.6"/>
+  <!-- ========== CAPTAIN CREST (mohawk) ========== -->
+  <!-- Central crest spine -->
+  <polygon points="320,62 308,130 332,130"
+           fill="#b5d477" stroke="#8fae5f" stroke-width="1.5"
+           filter="url(#ca-glow)"/>
+  <!-- Crest ridge details -->
+  <polygon points="320,80 312,130 328,130"
+           fill="#6b8e23" opacity="0.5"/>
+  <line x1="320" y1="130" x2="320" y2="175" stroke="#b5d477" stroke-width="3" opacity="0.8"/>
+  <!-- Side crest spikes -->
+  <polygon points="308,130 295,105 302,135"
+           fill="#8fae5f" stroke="#6b8e23" stroke-width="0.8" opacity="0.7"/>
+  <polygon points="332,130 345,105 338,135"
+           fill="#8fae5f" stroke="#6b8e23" stroke-width="0.8" opacity="0.7"/>
 
-  <!-- core glow -->
-  <circle cx="320" cy="320" r="50" fill="url(#lb-core-glow)" opacity="0.5"/>
+  <!-- ========== HELMET OUTER SHELL ========== -->
+  <path
+    d="M 180 275 Q 180 135 320 135 Q 460 135 460 275 L 460 385 Q 460 435 430 460 L 210 460 Q 180 435 180 385 Z"
+    fill="url(#ca-helmet)" stroke="#b5d477" stroke-width="3" stroke-linejoin="round"
+    filter="url(#ca-shadow)"/>
 
-  <!-- center dot -->
-  <circle cx="320" cy="320" r="12" fill="#b5d477" filter="url(#lb-glow-strong)"/>
-  <circle cx="320" cy="320" r="6" fill="#e8f0d6"/>
+  <!-- Helmet highlight -->
+  <path
+    d="M 210 275 Q 210 165 320 165 Q 430 165 430 275 L 430 290 Q 320 260 210 290 Z"
+    fill="#4a5d23" opacity="0.3"/>
 
-  <!-- reticle cross lines -->
-  <g stroke="#b5d477" stroke-width="2.5" opacity="0.75" stroke-linecap="round">
-    <!-- top -->
-    <line x1="320" y1="240" x2="320" y2="268"/>
-    <!-- bottom -->
-    <line x1="320" y1="372" x2="320" y2="400"/>
-    <!-- left -->
-    <line x1="240" y1="320" x2="268" y2="320"/>
-    <!-- right -->
-    <line x1="372" y1="320" x2="400" y2="320"/>
+  <!-- Helmet side ridges -->
+  <line x1="195" y1="200" x2="195" y2="380" stroke="#6b8e23" stroke-width="1.5" opacity="0.4"/>
+  <line x1="445" y1="200" x2="445" y2="380" stroke="#6b8e23" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Helmet top rivets -->
+  <circle cx="260" cy="165" r="4" fill="#4a5d23" stroke="#8fae5f" stroke-width="1"/>
+  <circle cx="380" cy="165" r="4" fill="#4a5d23" stroke="#8fae5f" stroke-width="1"/>
+
+  <!-- ========== SKULL VISOR (dark eye/mouth area) ========== -->
+  <path
+    d="M 225 250 Q 225 210 260 210 L 380 210 Q 415 210 415 250 L 415 345 Q 415 375 380 375 L 360 375 L 345 415 L 320 425 L 295 415 L 280 375 L 260 375 Q 225 375 225 345 Z"
+    fill="#0a0e05" stroke="#b5d477" stroke-width="2"/>
+
+  <!-- Visor inner edge highlight -->
+  <path
+    d="M 235 255 Q 235 222 265 222 L 375 222 Q 405 222 405 255 L 405 340 Q 405 365 375 365"
+    fill="none" stroke="#6b8e23" stroke-width="0.8" opacity="0.3"/>
+
+  <!-- ========== EYE SOCKETS ========== -->
+  <!-- Left eye glow aura -->
+  <ellipse cx="275" cy="278" rx="35" ry="35" fill="url(#ca-eye-glow)" opacity="0.25"/>
+  <!-- Right eye glow aura -->
+  <ellipse cx="365" cy="278" rx="35" ry="35" fill="url(#ca-eye-glow)" opacity="0.25"/>
+
+  <!-- Left eye -->
+  <ellipse cx="275" cy="278" rx="28" ry="32" fill="#8fae5f" filter="url(#ca-eye-filter)" opacity="0.95"/>
+  <ellipse cx="275" cy="278" rx="20" ry="24" fill="#b5d477" opacity="0.7"/>
+  <!-- Left pupil -->
+  <ellipse cx="275" cy="282" rx="8" ry="10" fill="#0a0e05"/>
+  <!-- Left eye highlight -->
+  <ellipse cx="268" cy="270" rx="5" ry="4" fill="#e8f0d6" opacity="0.3"/>
+
+  <!-- Right eye -->
+  <ellipse cx="365" cy="278" rx="28" ry="32" fill="#8fae5f" filter="url(#ca-eye-filter)" opacity="0.95"/>
+  <ellipse cx="365" cy="278" rx="20" ry="24" fill="#b5d477" opacity="0.7"/>
+  <!-- Right pupil -->
+  <ellipse cx="365" cy="282" rx="8" ry="10" fill="#0a0e05"/>
+  <!-- Right eye highlight -->
+  <ellipse cx="358" cy="270" rx="5" ry="4" fill="#e8f0d6" opacity="0.3"/>
+
+  <!-- ========== NOSE CAVITY ========== -->
+  <polygon points="320,300 308,345 332,345"
+           fill="#0a0e05" stroke="#b5d477" stroke-width="1" opacity="0.8"/>
+  <!-- Nose septum -->
+  <line x1="320" y1="308" x2="320" y2="340" stroke="#2d3817" stroke-width="1" opacity="0.4"/>
+
+  <!-- ========== TEETH GRILL ========== -->
+  <g stroke="#b5d477" stroke-width="1.2">
+    <!-- Horizontal bar -->
+    <line x1="260" y1="370" x2="380" y2="370"/>
+    <!-- Vertical teeth -->
+    <line x1="268" y1="358" x2="268" y2="395"/>
+    <line x1="282" y1="358" x2="282" y2="400"/>
+    <line x1="296" y1="358" x2="296" y2="408"/>
+    <line x1="310" y1="358" x2="310" y2="415"/>
+    <line x1="320" y1="358" x2="320" y2="418"/>
+    <line x1="330" y1="358" x2="330" y2="415"/>
+    <line x1="344" y1="358" x2="344" y2="408"/>
+    <line x1="358" y1="358" x2="358" y2="400"/>
+    <line x1="372" y1="358" x2="372" y2="395"/>
   </g>
 
-  <!-- outer reticle ticks -->
-  <g stroke="#8fae5f" stroke-width="2" opacity="0.5" stroke-linecap="round">
-    <line x1="320" y1="195" x2="320" y2="215"/>
-    <line x1="320" y1="425" x2="320" y2="445"/>
-    <line x1="195" y1="320" x2="215" y2="320"/>
-    <line x1="425" y1="320" x2="445" y2="320"/>
+  <!-- ========== HELMET SIDE VENTS ========== -->
+  <!-- Left vent -->
+  <g opacity="0.7">
+    <rect x="183" y="280" width="12" height="6" rx="1" fill="#b5d477"/>
+    <rect x="183" y="295" width="12" height="6" rx="1" fill="#b5d477"/>
+    <rect x="183" y="310" width="12" height="6" rx="1" fill="#b5d477"/>
+    <rect x="183" y="325" width="12" height="6" rx="1" fill="#8fae5f"/>
+    <rect x="183" y="340" width="12" height="6" rx="1" fill="#8fae5f"/>
+  </g>
+  <!-- Right vent -->
+  <g opacity="0.7">
+    <rect x="445" y="280" width="12" height="6" rx="1" fill="#b5d477"/>
+    <rect x="445" y="295" width="12" height="6" rx="1" fill="#b5d477"/>
+    <rect x="445" y="310" width="12" height="6" rx="1" fill="#b5d477"/>
+    <rect x="445" y="325" width="12" height="6" rx="1" fill="#8fae5f"/>
+    <rect x="445" y="340" width="12" height="6" rx="1" fill="#8fae5f"/>
   </g>
 
-  <!-- diagonal accent ticks -->
-  <g stroke="#6b8e23" stroke-width="1.5" opacity="0.4" stroke-linecap="round">
-    <line x1="254" y1="254" x2="268" y2="268"/>
-    <line x1="386" y1="254" x2="372" y2="268"/>
-    <line x1="254" y1="386" x2="268" y2="372"/>
-    <line x1="386" y1="386" x2="372" y2="372"/>
+  <!-- ========== NECK GUARD ========== -->
+  <path
+    d="M 215 460 L 200 530 L 440 530 L 425 460 Z"
+    fill="url(#ca-neck)" stroke="#b5d477" stroke-width="2"/>
+  <!-- Neck guard ridges -->
+  <line x1="220" y1="470" x2="210" y2="520" stroke="#6b8e23" stroke-width="1" opacity="0.4"/>
+  <line x1="420" y1="470" x2="430" y2="520" stroke="#6b8e23" stroke-width="1" opacity="0.4"/>
+  <!-- Chin bolt -->
+  <circle cx="320" cy="485" r="8" fill="#3a4a1e" stroke="#b5d477" stroke-width="2"/>
+  <circle cx="320" cy="485" r="3" fill="#b5d477"/>
+
+  <!-- ========== CAPTAIN RANK INSIGNIA ========== -->
+  <!-- Three chevrons on neck guard -->
+  <g stroke="#b5d477" stroke-width="2" fill="none" opacity="0.75" stroke-linecap="round">
+    <polyline points="290,500 320,510 350,500"/>
+    <polyline points="293,508 320,518 347,508"/>
+    <polyline points="296,516 320,526 344,516"/>
   </g>
 
-  <!-- "TM" text branding -->
-  <text x="320" y="520" text-anchor="middle"
-        font-family="'JetBrains Mono','SF Mono','Consolas',monospace"
-        font-size="42" font-weight="700" letter-spacing="8"
-        fill="#b5d477" filter="url(#lb-glow)" opacity="0.85">TM</text>
-
-  <!-- small label -->
-  <text x="320" y="548" text-anchor="middle"
-        font-family="'JetBrains Mono','SF Mono','Consolas',monospace"
-        font-size="14" font-weight="400" letter-spacing="4"
-        fill="#8fae5f" opacity="0.5">MONITOR</text>
-
-  <!-- corner brackets (visible in circle crop area) -->
-  <g stroke="#8fae5f" stroke-width="4" stroke-linecap="round" opacity="0.6">
-    <!-- top-left -->
-    <line x1="80" y1="100" x2="80" y2="135"/>
-    <line x1="80" y1="100" x2="115" y2="100"/>
-    <!-- top-right -->
-    <line x1="560" y1="100" x2="560" y2="135"/>
-    <line x1="560" y1="100" x2="525" y2="100"/>
-    <!-- bottom-left -->
-    <line x1="80" y1="540" x2="80" y2="505"/>
-    <line x1="80" y1="540" x2="115" y2="540"/>
-    <!-- bottom-right -->
-    <line x1="560" y1="540" x2="560" y2="505"/>
-    <line x1="560" y1="540" x2="525" y2="540"/>
+  <!-- ========== HUD CORNER MARKERS ========== -->
+  <g stroke="#8fae5f" stroke-width="3.5" fill="none" opacity="0.55" stroke-linecap="round">
+    <polyline points="92,195 92,225 115,225"/>
+    <polyline points="548,195 548,225 525,225"/>
+    <polyline points="92,445 92,415 115,415"/>
+    <polyline points="548,445 548,415 525,415"/>
   </g>
 
-  <!-- status dot (top-right, like "online") -->
-  <circle cx="490" cy="150" r="8" fill="#b5d477" filter="url(#lb-glow)" opacity="0.9"/>
+  <!-- ========== CAPTAIN STARS ========== -->
+  <!-- Left star -->
+  <polygon points="115,310 120,300 125,310 115,303 125,303"
+           fill="#b5d477" opacity="0.6" filter="url(#ca-glow)"/>
+  <!-- Right star -->
+  <polygon points="515,310 520,300 525,310 515,303 525,303"
+           fill="#b5d477" opacity="0.6" filter="url(#ca-glow)"/>
+
+  <!-- Status indicator -->
+  <circle cx="505" cy="135" r="8" fill="#b5d477" filter="url(#ca-glow-lg)" opacity="0.85"/>
 </svg>
