@@ -575,8 +575,8 @@ input {
   border-right: 1px solid var(--border-soft);
 }
 .tc-captain-identity svg {
-  width: clamp(64px, 5.28vw, 96px);
-  height: clamp(64px, 5.28vw, 96px);
+  width: clamp(64px, 5.28vw, 120px);
+  height: clamp(64px, 5.28vw, 120px);
 }
 
 .tc-captain-readout {
@@ -606,8 +606,8 @@ input {
   margin-bottom: 6px;
 }
 .tc-member .tc-top svg {
-  width: clamp(38px, 3.2vw, 58px);
-  height: clamp(38px, 3.2vw, 58px);
+  width: clamp(38px, 3.2vw, 72px);
+  height: clamp(38px, 3.2vw, 72px);
 }
 
 .tc-id {
@@ -1086,8 +1086,8 @@ input {
   gap: 18px;
 }
 .md-identity svg {
-  width: clamp(60px, 5vw, 90px);
-  height: clamp(60px, 5vw, 90px);
+  width: clamp(60px, 5vw, 112px);
+  height: clamp(60px, 5vw, 112px);
 }
 .md-identity-text {
   display: flex;
