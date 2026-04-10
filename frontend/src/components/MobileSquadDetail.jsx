@@ -48,7 +48,7 @@ function RowCard({ row, tab, onClick }) {
         return (
           <div className="msd-card-field" key={k}>
             <div className="msd-card-label">{displayName(k)}</div>
-            <div className="msd-card-value">{String(v)}</div>
+            <div className={`msd-card-value${tab === 'main' ? '' : ' msd-card-value-wrap'}`}>{String(v)}</div>
           </div>
         );
       })}

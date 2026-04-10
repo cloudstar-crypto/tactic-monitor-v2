@@ -918,6 +918,15 @@ input {
   line-height: 1.4;
 }
 
+/* Non-MAIN tab cells preserve newlines from the source sheet so multi-line
+   notes render the way the user typed them. No clamp — let the row grow. */
+.tt-cell-text-wrap {
+  display: block;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .tt-cell-alert {
   text-align: center;
   vertical-align: middle;
@@ -1577,6 +1586,10 @@ input {
   flex: 1;
   color: var(--text);
   word-break: break-word;
+}
+/* Non-MAIN tab card values preserve newlines from the source sheet. */
+.msd-card-value-wrap {
+  white-space: pre-wrap;
 }
 .msd-empty {
   padding: 40px 20px;

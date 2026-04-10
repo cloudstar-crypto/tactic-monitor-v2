@@ -78,7 +78,7 @@ function TacticTable({ rows, tab, onRowClick }) {
               >
                 {columns.map((k) => (
                   <td key={k} title={row[k] || ''}>
-                    <span className="tt-cell-text">{row[k] || ''}</span>
+                    <span className={isMain ? 'tt-cell-text' : 'tt-cell-text-wrap'}>{row[k] || ''}</span>
                   </td>
                 ))}
                 {isMain && (
