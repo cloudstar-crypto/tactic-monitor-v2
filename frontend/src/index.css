@@ -1333,7 +1333,7 @@ input {
   text-shadow: 0 0 8px rgba(181, 212, 119, 0.3);
 }
 .mbd-squad-meta {
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 1.5px;
   color: var(--text-dim);
 }
