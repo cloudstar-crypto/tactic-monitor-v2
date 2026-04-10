@@ -178,7 +178,7 @@ input {
 }
 
 .hud-title {
-  font-size: 18px;
+  font-size: clamp(16px, 1.25vw, 22px);
   font-weight: 800;
   letter-spacing: 4px;
   color: var(--army-glow);
@@ -200,7 +200,7 @@ input {
 }
 
 .hud-clock-time {
-  font-size: 20px;
+  font-size: clamp(18px, 1.4vw, 24px);
   font-weight: 700;
   color: var(--army-glow);
   letter-spacing: 3px;
@@ -660,14 +660,14 @@ input {
 }
 
 .tc-stat-value {
-  font-size: 16px;
+  font-size: clamp(14px, 1.1vw, 20px);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   margin-top: 1px;
 }
 
 .tc-captain .tc-stat-value {
-  font-size: 24px;
+  font-size: clamp(20px, 1.67vw, 30px);
 }
 
 .tc-ecg {
@@ -778,7 +778,7 @@ input {
   flex: 1;
 }
 .sd-identity-name {
-  font-size: 18px;
+  font-size: clamp(16px, 1.25vw, 22px);
   font-weight: 700;
   letter-spacing: 2px;
   color: var(--army-glow);
@@ -1083,7 +1083,7 @@ input {
   gap: 4px;
 }
 .md-identity-name {
-  font-size: 22px;
+  font-size: clamp(18px, 1.53vw, 28px);
   font-weight: 700;
   letter-spacing: 2.5px;
   color: var(--army-glow);
