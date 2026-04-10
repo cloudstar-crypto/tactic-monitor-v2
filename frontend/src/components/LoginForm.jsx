@@ -37,7 +37,7 @@ function LoginForm({ onLoginSuccess }) {
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '20px' }}>
           <label style={{ display: 'block', marginBottom: '10px' }}>
-            管理員密碼
+            ADMIN PASSWORD
           </label>
           <input
             type="password"
