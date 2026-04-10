@@ -1,0 +1,153 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="Tactic Monitor LINE Bot">
+  <title>Tactic Monitor LINE Bot</title>
+  <defs>
+    <radialGradient id="lb-bg" cx="50%" cy="42%" r="72%">
+      <stop offset="0%" stop-color="#1e2d12"/>
+      <stop offset="50%" stop-color="#0f1a0a"/>
+      <stop offset="100%" stop-color="#060a03"/>
+    </radialGradient>
+    <linearGradient id="lb-hex" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#2d3817"/>
+      <stop offset="100%" stop-color="#121c0c"/>
+    </linearGradient>
+    <linearGradient id="lb-ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#b5d477"/>
+      <stop offset="100%" stop-color="#6b8e23"/>
+    </linearGradient>
+    <radialGradient id="lb-core-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#b5d477" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#8fae5f" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#6b8e23" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="lb-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="lb-glow-strong" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="12" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="lb-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#b5d477" flood-opacity="0.3"/>
+    </filter>
+    <!-- clip to circle for LINE avatar -->
+    <clipPath id="lb-circle-clip">
+      <circle cx="320" cy="320" r="320"/>
+    </clipPath>
+  </defs>
+
+  <!-- circular background (LINE crops to circle) -->
+  <circle cx="320" cy="320" r="320" fill="url(#lb-bg)"/>
+
+  <!-- subtle scan lines -->
+  <g opacity="0.04" stroke="#8fae5f" stroke-width="1">
+    <line x1="0" y1="80" x2="640" y2="80"/>
+    <line x1="0" y1="160" x2="640" y2="160"/>
+    <line x1="0" y1="240" x2="640" y2="240"/>
+    <line x1="0" y1="320" x2="640" y2="320"/>
+    <line x1="0" y1="400" x2="640" y2="400"/>
+    <line x1="0" y1="480" x2="640" y2="480"/>
+    <line x1="0" y1="560" x2="640" y2="560"/>
+  </g>
+
+  <!-- radial grid (subtle) -->
+  <circle cx="320" cy="320" r="280" fill="none" stroke="#8fae5f" stroke-width="0.5" opacity="0.06"/>
+  <circle cx="320" cy="320" r="200" fill="none" stroke="#8fae5f" stroke-width="0.5" opacity="0.08"/>
+  <circle cx="320" cy="320" r="120" fill="none" stroke="#8fae5f" stroke-width="0.5" opacity="0.10"/>
+
+  <!-- outer hexagon halo (faint) -->
+  <polygon points="320,68 538,194 538,446 320,572 102,446 102,194"
+           fill="none" stroke="#4a5d23" stroke-width="2.5" opacity="0.4"/>
+
+  <!-- main hexagon border -->
+  <polygon points="320,95 518,210 518,430 320,545 122,430 122,210"
+           fill="none" stroke="#8fae5f" stroke-width="8" stroke-linejoin="round"
+           filter="url(#lb-glow)" opacity="0.9"/>
+
+  <!-- inner hexagon plate -->
+  <polygon points="320,155 430,218 430,422 320,485 210,422 210,218"
+           fill="url(#lb-hex)" stroke="#6b8e23" stroke-width="3" stroke-linejoin="round"
+           opacity="0.85"/>
+
+  <!-- inner hex accent border -->
+  <polygon points="320,170 418,228 418,412 320,470 222,412 222,228"
+           fill="none" stroke="#b5d477" stroke-width="1.5" stroke-linejoin="round"
+           opacity="0.3"/>
+
+  <!-- scope rings -->
+  <circle cx="320" cy="320" r="90" fill="none" stroke="#8fae5f" stroke-width="1" opacity="0.25"/>
+  <circle cx="320" cy="320" r="60" fill="none" stroke="#b5d477" stroke-width="1.5" opacity="0.4"/>
+  <circle cx="320" cy="320" r="36" fill="none" stroke="#b5d477" stroke-width="2" opacity="0.6"/>
+
+  <!-- core glow -->
+  <circle cx="320" cy="320" r="50" fill="url(#lb-core-glow)" opacity="0.5"/>
+
+  <!-- center dot -->
+  <circle cx="320" cy="320" r="12" fill="#b5d477" filter="url(#lb-glow-strong)"/>
+  <circle cx="320" cy="320" r="6" fill="#e8f0d6"/>
+
+  <!-- reticle cross lines -->
+  <g stroke="#b5d477" stroke-width="2.5" opacity="0.75" stroke-linecap="round">
+    <!-- top -->
+    <line x1="320" y1="240" x2="320" y2="268"/>
+    <!-- bottom -->
+    <line x1="320" y1="372" x2="320" y2="400"/>
+    <!-- left -->
+    <line x1="240" y1="320" x2="268" y2="320"/>
+    <!-- right -->
+    <line x1="372" y1="320" x2="400" y2="320"/>
+  </g>
+
+  <!-- outer reticle ticks -->
+  <g stroke="#8fae5f" stroke-width="2" opacity="0.5" stroke-linecap="round">
+    <line x1="320" y1="195" x2="320" y2="215"/>
+    <line x1="320" y1="425" x2="320" y2="445"/>
+    <line x1="195" y1="320" x2="215" y2="320"/>
+    <line x1="425" y1="320" x2="445" y2="320"/>
+  </g>
+
+  <!-- diagonal accent ticks -->
+  <g stroke="#6b8e23" stroke-width="1.5" opacity="0.4" stroke-linecap="round">
+    <line x1="254" y1="254" x2="268" y2="268"/>
+    <line x1="386" y1="254" x2="372" y2="268"/>
+    <line x1="254" y1="386" x2="268" y2="372"/>
+    <line x1="386" y1="386" x2="372" y2="372"/>
+  </g>
+
+  <!-- "TM" text branding -->
+  <text x="320" y="520" text-anchor="middle"
+        font-family="'JetBrains Mono','SF Mono','Consolas',monospace"
+        font-size="42" font-weight="700" letter-spacing="8"
+        fill="#b5d477" filter="url(#lb-glow)" opacity="0.85">TM</text>
+
+  <!-- small label -->
+  <text x="320" y="548" text-anchor="middle"
+        font-family="'JetBrains Mono','SF Mono','Consolas',monospace"
+        font-size="14" font-weight="400" letter-spacing="4"
+        fill="#8fae5f" opacity="0.5">MONITOR</text>
+
+  <!-- corner brackets (visible in circle crop area) -->
+  <g stroke="#8fae5f" stroke-width="4" stroke-linecap="round" opacity="0.6">
+    <!-- top-left -->
+    <line x1="80" y1="100" x2="80" y2="135"/>
+    <line x1="80" y1="100" x2="115" y2="100"/>
+    <!-- top-right -->
+    <line x1="560" y1="100" x2="560" y2="135"/>
+    <line x1="560" y1="100" x2="525" y2="100"/>
+    <!-- bottom-left -->
+    <line x1="80" y1="540" x2="80" y2="505"/>
+    <line x1="80" y1="540" x2="115" y2="540"/>
+    <!-- bottom-right -->
+    <line x1="560" y1="540" x2="560" y2="505"/>
+    <line x1="560" y1="540" x2="525" y2="540"/>
+  </g>
+
+  <!-- status dot (top-right, like "online") -->
+  <circle cx="490" cy="150" r="8" fill="#b5d477" filter="url(#lb-glow)" opacity="0.9"/>
+</svg>
