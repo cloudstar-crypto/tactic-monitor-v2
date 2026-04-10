@@ -20,15 +20,14 @@ function findSquadOf(name) {
 }
 
 // Build the ordered list of keys to display for a single row card.
-// Re-applies the same "update/date go to the end" rule used in TacticTable
-// so the mobile and desktop views stay consistent.
+// Re-applies the same "update date goes to the end" rule used in
+// TacticTable so the mobile and desktop views stay consistent. The
+// match must be the two-word phrase so other columns whose header
+// happens to contain the word "date" (e.g. Onsite column) stay put.
 function buildOrderedKeys(row, tab) {
   const keys = Object.keys(row || {}).filter((k) => !isHiddenColumn(k, tab));
   if (tab === 'main') return keys;
-  const isDate = (k) => {
-    const s = String(k).toLowerCase();
-    return s.includes('update') || s.includes('date');
-  };
+  const isDate = (k) => String(k).toLowerCase().includes('update date');
   return [...keys.filter((k) => !isDate(k)), ...keys.filter(isDate)];
 }
 

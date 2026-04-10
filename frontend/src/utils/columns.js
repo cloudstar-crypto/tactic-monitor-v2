@@ -46,11 +46,10 @@ const FIXED_WIDTHS = [
   { match: 'pn', width: 140 },
   { match: 'last update', width: 200 },
   { match: 'car open date', width: 100 },
-  // Update-date columns in non-main tabs only hold an 8-digit date, so
-  // keep them tight. This match also catches header variants like
-  // "Update Date", "Update_Date", "UpdateDate", or plain "Date".
-  { match: 'update', width: 95 },
-  { match: 'date', width: 95 },
+  // 8-digit update-date columns only — must be the two-word phrase so we
+  // don't accidentally shrink other columns whose header text happens to
+  // contain the word "date" (e.g. Onsite column with "(... + Date + ...)").
+  { match: 'update date', width: 95 },
 ];
 
 export function columnWidth(key) {
