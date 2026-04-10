@@ -186,7 +186,7 @@ input {
 }
 
 .hud-subtitle {
-  font-size: clamp(9px, 0.69vw, 14px);
+  font-size: clamp(9px, 0.69vw, 18px);
   letter-spacing: 2px;
   color: var(--text-dim);
   margin-top: 2px;
@@ -209,7 +209,7 @@ input {
 }
 
 .hud-clock-date {
-  font-size: clamp(9px, 0.69vw, 14px);
+  font-size: clamp(9px, 0.69vw, 18px);
   color: var(--text-dim);
   letter-spacing: 2px;
   margin-top: 2px;
@@ -221,7 +221,7 @@ input {
   gap: 6px;
   padding: 4px 12px;
   border: 1px solid var(--army-mid);
-  font-size: clamp(10px, 0.76vw, 15px);
+  font-size: clamp(10px, 0.76vw, 20px);
   letter-spacing: 2px;
   color: var(--army-glow);
   background: rgba(107, 142, 35, 0.1);
@@ -242,7 +242,7 @@ input {
 }
 
 .hud-logout {
-  font-size: clamp(10px, 0.76vw, 15px);
+  font-size: clamp(10px, 0.76vw, 20px);
   padding: 6px 12px;
   color: var(--amber);
   border-color: rgba(212, 162, 76, 0.5);
@@ -371,7 +371,7 @@ input {
   justify-content: center;
   color: var(--army-glow);
   letter-spacing: 4px;
-  font-size: clamp(12px, 0.97vw, 18px);
+  font-size: clamp(12px, 0.97vw, 25px);
 }
 
 .sm-loading-inner {
@@ -454,7 +454,7 @@ input {
 
 .sq-meta {
   margin-left: auto;
-  font-size: clamp(9px, 0.69vw, 14px);
+  font-size: clamp(9px, 0.69vw, 18px);
   letter-spacing: 2px;
   color: var(--text-dim);
 }
@@ -503,7 +503,7 @@ input {
 }
 
 .tc-member .tc-name {
-  font-size: clamp(11px, 0.9vw, 17px);
+  font-size: clamp(11px, 0.9vw, 23px);
 }
 
 .tc-alert-bar {
@@ -513,7 +513,7 @@ input {
   gap: 6px;
   padding: 3px 0;
   margin-top: 4px;
-  font-size: clamp(10px, 0.76vw, 15px);
+  font-size: clamp(10px, 0.76vw, 20px);
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -657,14 +657,14 @@ input {
 }
 
 .tc-stat-label {
-  font-size: clamp(10px, 0.76vw, 15px);
+  font-size: clamp(10px, 0.76vw, 20px);
   letter-spacing: 1.8px;
   color: var(--text-dim);
   font-weight: 600;
 }
 
 .tc-captain .tc-stat-label {
-  font-size: clamp(11px, 0.83vw, 16px);
+  font-size: clamp(11px, 0.83vw, 21px);
 }
 
 .tc-stat-value {
@@ -767,7 +767,7 @@ input {
   border: 1px solid var(--border-mid);
   color: var(--army-light);
   padding: 6px 14px;
-  font-size: clamp(10px, 0.76vw, 15px);
+  font-size: clamp(10px, 0.76vw, 20px);
   letter-spacing: 1.5px;
   font-weight: 700;
   cursor: pointer;
@@ -796,14 +796,14 @@ input {
   color: var(--text-dim);
 }
 .sd-identity-squad {
-  font-size: clamp(10px, 0.76vw, 15px);
+  font-size: clamp(10px, 0.76vw, 20px);
   letter-spacing: 1.5px;
   color: var(--text-dim);
   text-transform: uppercase;
 }
 
 .sd-status {
-  font-size: clamp(10px, 0.76vw, 15px);
+  font-size: clamp(10px, 0.76vw, 20px);
   letter-spacing: 1px;
   color: var(--text-dim);
 }
@@ -826,7 +826,7 @@ input {
   border-bottom: 2px solid transparent;
   color: var(--text-dim);
   padding: 13px 20px;
-  font-size: clamp(11px, 0.9vw, 18px);
+  font-size: clamp(11px, 0.9vw, 23px);
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -852,7 +852,7 @@ input {
   justify-content: center;
   min-width: 24px;
   padding: 1px 7px;
-  font-size: clamp(10px, 0.83vw, 16px);
+  font-size: clamp(10px, 0.83vw, 21px);
   border: 1px solid var(--border-mid);
   background: rgba(7, 11, 4, 0.5);
   color: var(--army-light);
@@ -876,7 +876,7 @@ input {
   align-items: center;
   gap: 14px;
   padding: 60px 20px;
-  font-size: clamp(11px, 0.9vw, 18px);
+  font-size: clamp(11px, 0.9vw, 23px);
   letter-spacing: 2px;
   color: var(--army-light);
 }
@@ -903,7 +903,7 @@ input {
 .tt-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: clamp(10px, 0.83vw, 16px);
+  font-size: clamp(10px, 0.83vw, 21px);
   table-layout: fixed;
 }
 
@@ -915,7 +915,7 @@ input {
   color: var(--army-glow);
   text-align: left;
   padding: 10px 12px;
-  font-size: clamp(9px, 0.69vw, 14px);
+  font-size: clamp(9px, 0.69vw, 18px);
   letter-spacing: 1.5px;
   font-weight: 700;
   text-transform: uppercase;
@@ -974,7 +974,7 @@ input {
   gap: 16px;
   padding: 60px 20px;
   color: var(--text-dim);
-  font-size: clamp(10px, 0.83vw, 16px);
+  font-size: clamp(10px, 0.83vw, 21px);
   letter-spacing: 2px;
 }
 .tt-empty-line {
@@ -993,7 +993,7 @@ input {
   align-items: center;
   gap: 6px;
   padding: 3px 8px;
-  font-size: clamp(9px, 0.69vw, 14px);
+  font-size: clamp(9px, 0.69vw, 18px);
   font-weight: 700;
   letter-spacing: 1px;
   border: 1px solid;
