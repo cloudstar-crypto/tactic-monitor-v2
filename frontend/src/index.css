@@ -149,6 +149,30 @@ input {
   align-items: center;
   gap: 12px;
 }
+/* When the logo block is wired up as a clickable home-shortcut it
+   picks up [role="button"] from Header.jsx; give it hover feedback. */
+.hud-logo-block[role="button"] {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: filter 0.18s ease;
+}
+.hud-logo-block[role="button"]:hover .hud-title,
+.hud-logo-block[role="button"]:focus-visible .hud-title {
+  color: #d4ec8a;
+  text-shadow: 0 0 14px rgba(181, 212, 119, 0.8);
+}
+.hud-logo-block[role="button"]:hover svg,
+.hud-logo-block[role="button"]:focus-visible svg {
+  filter: drop-shadow(0 0 6px rgba(181, 212, 119, 0.7));
+}
+.hud-logo-block[role="button"]:focus-visible {
+  outline: 1px dashed var(--army-mid);
+  outline-offset: 4px;
+}
+.hud-logo-block[role="button"]:active .hud-title {
+  color: var(--army-light);
+}
 
 .hud-title {
   font-size: 18px;

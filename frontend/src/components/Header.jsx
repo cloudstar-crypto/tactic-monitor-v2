@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Header({ isAuthenticated, onLogout, variant = 'desktop' }) {
   const [now, setNow] = useState(new Date());
+  const navigate = useNavigate();
+  const location = useLocation();
+
   useEffect(() => {
     const t = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(t);
@@ -10,10 +14,34 @@ function Header({ isAuthenticated, onLogout, variant = 'desktop' }) {
   const dateStr = now.toISOString().slice(0, 10);
   const timeStr = now.toTimeString().slice(0, 8);
 
+  // Click / keyboard handler for the TACTIC MONITOR logo — jumps straight
+  // back to Layer 1. Only active once the user is authenticated and not
+  // already sitting on the root route.
+  const logoClickable = isAuthenticated && location.pathname !== '/';
+  const handleHomeClick = () => {
+    if (logoClickable) navigate('/');
+  };
+  const handleHomeKeyDown = (e) => {
+    if (!logoClickable) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      navigate('/');
+    }
+  };
+  const logoProps = logoClickable
+    ? {
+        role: 'button',
+        tabIndex: 0,
+        onClick: handleHomeClick,
+        onKeyDown: handleHomeKeyDown,
+        'aria-label': 'Return to Strategic Map',
+      }
+    : {};
+
   if (variant === 'mobile') {
     return (
       <header className="hud-header hud-header-mobile">
-        <div className="hud-logo-block">
+        <div className="hud-logo-block" {...logoProps}>
           <svg width="22" height="22" viewBox="0 0 40 40">
             <polygon points="20,3 36,11 36,29 20,37 4,29 4,11" fill="none" stroke="#8fae5f" strokeWidth="1.5" />
             <polygon points="20,9 30,14 30,26 20,31 10,26 10,14" fill="#2d3817" stroke="#b5d477" strokeWidth="1" />
@@ -39,7 +67,7 @@ function Header({ isAuthenticated, onLogout, variant = 'desktop' }) {
   return (
     <header className="hud-header">
       <div className="hud-left">
-        <div className="hud-logo-block">
+        <div className="hud-logo-block" {...logoProps}>
           <svg width="28" height="28" viewBox="0 0 40 40">
             <polygon points="20,3 36,11 36,29 20,37 4,29 4,11" fill="none" stroke="#8fae5f" strokeWidth="1.5" />
             <polygon points="20,9 30,14 30,26 20,31 10,26 10,14" fill="#2d3817" stroke="#b5d477" strokeWidth="1" />
