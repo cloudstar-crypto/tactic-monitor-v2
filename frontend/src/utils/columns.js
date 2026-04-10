@@ -44,7 +44,7 @@ const FIXED_WIDTHS = [
   { match: 'customer', width: 'clamp(80px, 6.94vw, 178px)' },
   { match: 'car no', width: 'clamp(56px, 4.86vw, 125px)' },
   { match: 'pn', width: 'clamp(112px, 9.72vw, 249px)' },
-  { match: 'last update', width: 'clamp(200px, 16.67vw, 427px)' },
+  { match: 'last update', width: 'clamp(230px, 19.44vw, 498px)' },
   { match: 'car open date', width: 'clamp(80px, 6.94vw, 178px)' },
   // 8-digit update-date columns only — must be the two-word phrase so we
   // don't accidentally shrink other columns whose header text happens to
