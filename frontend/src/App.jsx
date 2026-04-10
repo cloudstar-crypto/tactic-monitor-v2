@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import LoginForm from './components/LoginForm';
-import Dashboard from './components/Dashboard';
 import StrategicMap from './components/StrategicMap';
 import SquadDetail from './components/SquadDetail';
+import MobileDashboard from './components/MobileDashboard';
+import MobileSquadDetail from './components/MobileSquadDetail';
+import InstallPrompt from './components/InstallPrompt';
 import { useIsMobile } from './hooks/useIsMobile';
 
 function App() {
@@ -18,18 +20,19 @@ function App() {
     setLoading(false);
   }, []);
 
-  // Toggle body scroll lock: desktop must not scroll at body level (layers
-  // manage their own internal scrolling); mobile keeps body scrollable.
+  // Lock body scroll on both desktop and mobile — each layer manages its
+  // own internal scrolling. Layer 1 (mobile dashboard) is non-scrollable
+  // at the body level; Layer 2/3 scroll inside their own containers.
   useEffect(() => {
     if (!isAuthenticated) {
       document.body.style.overflow = '';
       return;
     }
-    document.body.style.overflow = isMobile ? 'auto' : 'hidden';
+    document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isAuthenticated, isMobile]);
+  }, [isAuthenticated]);
 
   const handleLogout = () => {
     localStorage.removeItem('authToken');
@@ -47,12 +50,17 @@ function App() {
     );
   }
 
+  // Mobile — routed with mobile-specific layer components.
   if (isMobile) {
-    // Independent mobile tree — deferred for later redesign.
     return (
       <div className="app app-mobile">
         <Header isAuthenticated={true} onLogout={handleLogout} variant="mobile" />
-        <Dashboard />
+        <Routes>
+          <Route path="/" element={<MobileDashboard />} />
+          <Route path="/squad/:name" element={<MobileSquadDetail />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        <InstallPrompt />
       </div>
     );
   }
