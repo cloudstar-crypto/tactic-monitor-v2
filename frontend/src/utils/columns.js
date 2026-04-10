@@ -40,16 +40,16 @@ export function displayName(key) {
 // Order matters: longer/more-specific patterns must come before broader ones
 // because `find` returns the first match.
 const FIXED_WIDTHS = [
-  { match: 'status', width: 110 },
-  { match: 'customer', width: 100 },
-  { match: 'car no', width: 70 },
-  { match: 'pn', width: 140 },
-  { match: 'last update', width: 200 },
-  { match: 'car open date', width: 100 },
+  { match: 'status', width: 'clamp(90px, 7.64vw, 196px)' },
+  { match: 'customer', width: 'clamp(80px, 6.94vw, 178px)' },
+  { match: 'car no', width: 'clamp(56px, 4.86vw, 125px)' },
+  { match: 'pn', width: 'clamp(112px, 9.72vw, 249px)' },
+  { match: 'last update', width: 'clamp(160px, 13.89vw, 356px)' },
+  { match: 'car open date', width: 'clamp(80px, 6.94vw, 178px)' },
   // 8-digit update-date columns only — must be the two-word phrase so we
   // don't accidentally shrink other columns whose header text happens to
   // contain the word "date" (e.g. Onsite column with "(... + Date + ...)").
-  { match: 'update date', width: 95 },
+  { match: 'update date', width: 'clamp(76px, 6.6vw, 169px)' },
 ];
 
 export function columnWidth(key) {

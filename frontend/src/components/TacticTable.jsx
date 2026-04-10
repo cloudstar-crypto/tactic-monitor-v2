@@ -55,9 +55,9 @@ function TacticTable({ rows, tab, onRowClick }) {
         <colgroup>
           {columns.map((k) => {
             const w = columnWidth(k);
-            return <col key={k} style={w ? { width: `${w}px` } : undefined} />;
+            return <col key={k} style={w ? { width: w } : undefined} />;
           })}
-          {isMain && <col style={{ width: '90px' }} />}
+          {isMain && <col style={{ width: 'clamp(72px, 6.25vw, 160px)' }} />}
         </colgroup>
         <thead>
           <tr>
