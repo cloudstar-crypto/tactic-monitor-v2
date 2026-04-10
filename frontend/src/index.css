@@ -1203,6 +1203,11 @@ input {
   grid-template-columns: repeat(auto-fill, minmax(clamp(200px, 16.67vw, 430px), 1fr));
   gap: 14px 18px;
 }
+.md-grid-mission {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(200px, 16.67vw, 430px), 1fr));
+  gap: 14px 18px;
+}
 .md-field {
   display: flex;
   flex-direction: column;

@@ -96,7 +96,7 @@ function MissionDossier({ row, engineerName, squadName, onBack }) {
             <h2 className="md-section-title">
               <span className="md-section-bar" /> MISSION DATA
             </h2>
-            <div className="md-grid">{generalKeys.map(renderField)}</div>
+            <div className="md-grid-mission">{generalKeys.map(renderField)}</div>
           </section>
         )}
 
