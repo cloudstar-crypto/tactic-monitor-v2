@@ -325,7 +325,7 @@ input {
   display: flex;
   gap: 24px;
   padding: 6px 12px;
-  font-size: 10px;
+  font-size: clamp(9px, 0.69vw, 14px);
   letter-spacing: 2px;
   color: var(--text-dim);
   border: 1px solid var(--border-soft);
@@ -371,7 +371,7 @@ input {
   justify-content: center;
   color: var(--army-glow);
   letter-spacing: 4px;
-  font-size: 14px;
+  font-size: clamp(12px, 0.97vw, 18px);
 }
 
 .sm-loading-inner {
@@ -446,7 +446,7 @@ input {
 }
 
 .sq-title {
-  font-size: 16px;
+  font-size: clamp(14px, 1.1vw, 22px);
   letter-spacing: 4px;
   color: var(--sq-accent);
   text-shadow: 0 0 8px color-mix(in srgb, var(--sq-accent) 60%, transparent);
@@ -454,7 +454,7 @@ input {
 
 .sq-meta {
   margin-left: auto;
-  font-size: 10px;
+  font-size: clamp(9px, 0.69vw, 14px);
   letter-spacing: 2px;
   color: var(--text-dim);
 }
@@ -513,7 +513,7 @@ input {
   gap: 6px;
   padding: 3px 0;
   margin-top: 4px;
-  font-size: 11px;
+  font-size: clamp(10px, 0.76vw, 15px);
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -616,7 +616,7 @@ input {
 }
 
 .tc-role {
-  font-size: 9px;
+  font-size: clamp(8px, 0.63vw, 13px);
   letter-spacing: 2px;
   color: var(--text-dim);
 }
@@ -638,7 +638,7 @@ input {
 }
 
 .tc-alert {
-  font-size: 9px;
+  font-size: clamp(8px, 0.63vw, 13px);
   letter-spacing: 1.5px;
   margin-top: 2px;
 }
