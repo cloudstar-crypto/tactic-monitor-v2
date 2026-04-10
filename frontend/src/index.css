@@ -767,7 +767,7 @@ input {
   border: 1px solid var(--border-mid);
   color: var(--army-light);
   padding: 6px 14px;
-  font-size: 11px;
+  font-size: clamp(10px, 0.76vw, 15px);
   letter-spacing: 1.5px;
   font-weight: 700;
   cursor: pointer;
@@ -796,14 +796,14 @@ input {
   color: var(--text-dim);
 }
 .sd-identity-squad {
-  font-size: 11px;
+  font-size: clamp(10px, 0.76vw, 15px);
   letter-spacing: 1.5px;
   color: var(--text-dim);
   text-transform: uppercase;
 }
 
 .sd-status {
-  font-size: 11px;
+  font-size: clamp(10px, 0.76vw, 15px);
   letter-spacing: 1px;
   color: var(--text-dim);
 }
@@ -826,7 +826,7 @@ input {
   border-bottom: 2px solid transparent;
   color: var(--text-dim);
   padding: 13px 20px;
-  font-size: 13px;
+  font-size: clamp(11px, 0.9vw, 18px);
   font-weight: 700;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -852,7 +852,7 @@ input {
   justify-content: center;
   min-width: 24px;
   padding: 1px 7px;
-  font-size: 12px;
+  font-size: clamp(10px, 0.83vw, 16px);
   border: 1px solid var(--border-mid);
   background: rgba(7, 11, 4, 0.5);
   color: var(--army-light);
@@ -876,7 +876,7 @@ input {
   align-items: center;
   gap: 14px;
   padding: 60px 20px;
-  font-size: 13px;
+  font-size: clamp(11px, 0.9vw, 18px);
   letter-spacing: 2px;
   color: var(--army-light);
 }
@@ -903,7 +903,7 @@ input {
 .tt-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: clamp(10px, 0.83vw, 16px);
   table-layout: fixed;
 }
 
@@ -915,7 +915,7 @@ input {
   color: var(--army-glow);
   text-align: left;
   padding: 10px 12px;
-  font-size: 10px;
+  font-size: clamp(9px, 0.69vw, 14px);
   letter-spacing: 1.5px;
   font-weight: 700;
   text-transform: uppercase;
@@ -974,7 +974,7 @@ input {
   gap: 16px;
   padding: 60px 20px;
   color: var(--text-dim);
-  font-size: 12px;
+  font-size: clamp(10px, 0.83vw, 16px);
   letter-spacing: 2px;
 }
 .tt-empty-line {
@@ -993,7 +993,7 @@ input {
   align-items: center;
   gap: 6px;
   padding: 3px 8px;
-  font-size: 10px;
+  font-size: clamp(9px, 0.69vw, 14px);
   font-weight: 700;
   letter-spacing: 1px;
   border: 1px solid;
@@ -1003,7 +1003,7 @@ input {
 }
 .ab-compact {
   padding: 2px 6px;
-  font-size: 9px;
+  font-size: clamp(8px, 0.63vw, 13px);
 }
 .ab-dot {
   width: 6px;
