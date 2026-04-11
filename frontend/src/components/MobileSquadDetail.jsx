@@ -77,8 +77,12 @@ function MobileSquadDetail() {
   const tabCounts = useMemo(() => {
     const out = {};
     for (const t of TABS) {
-      const arr = data?.[t.key] || [];
-      out[t.key] = arr.filter((r) => rowHasVisibleContent(r, t.key)).length;
+      if (t.key === 'main') {
+        const arr = data?.[t.key] || [];
+        out[t.key] = arr.filter((r) => rowHasVisibleContent(r, t.key)).length;
+      } else {
+        out[t.key] = data?.tabCounts?.[t.key] ?? 0;
+      }
     }
     return out;
   }, [data]);

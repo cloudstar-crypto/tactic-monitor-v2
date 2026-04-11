@@ -37,11 +37,18 @@ function SquadDetail() {
   );
 
   // Pre-compute counts for all tabs once per data refresh.
+  //   - MAIN: still counted client-side from rows that have visible content.
+  //   - report / fsr / rmReport / others: use the backend-computed count
+  //     derived from a fixed cell position (B2, plus C2 for others).
   const tabCounts = useMemo(() => {
     const out = {};
     for (const t of TABS) {
-      const arr = data?.[t.key] || [];
-      out[t.key] = arr.filter((r) => rowHasVisibleContent(r, t.key)).length;
+      if (t.key === 'main') {
+        const arr = data?.[t.key] || [];
+        out[t.key] = arr.filter((r) => rowHasVisibleContent(r, t.key)).length;
+      } else {
+        out[t.key] = data?.tabCounts?.[t.key] ?? 0;
+      }
     }
     return out;
   }, [data]);

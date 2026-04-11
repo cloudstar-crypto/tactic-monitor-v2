@@ -32,6 +32,40 @@ function rowsToObjects(values) {
   });
 }
 
+// Count items encoded inside a single cell for report-style tabs.
+// Rules:
+//   - null / undefined / empty string → 0
+//   - 'NA' / 'N/A' (case-insensitive, whitespace ignored) → 0
+//   - otherwise → number of line breaks + 1
+function countCell(raw) {
+  if (raw == null) return 0;
+  const s = String(raw).trim();
+  if (s === '') return 0;
+  const compact = s.replace(/\s+/g, '').toLowerCase();
+  if (compact === 'na' || compact === 'n/a') return 0;
+  const normalized = s.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  const newlines = (normalized.match(/\n/g) || []).length;
+  return newlines + 1;
+}
+
+// Compute the per-tab count for report-style tabs by reading fixed cell
+// positions from the raw sheet values (NOT the header-keyed objects).
+//   - report / fsr / rmReport: count of B2 only
+//   - others: count of B2 + count of C2
+// values is the raw 2D array returned by the Sheets API (row 0 = header).
+function computeTabCount(values, tabKey) {
+  if (!values || values.length < 2) return 0;
+  const dataRow = values[1];
+  if (!dataRow) return 0;
+  if (tabKey === 'others') {
+    return countCell(dataRow[1]) + countCell(dataRow[2]);
+  }
+  if (tabKey === 'report' || tabKey === 'fsr' || tabKey === 'rmReport') {
+    return countCell(dataRow[1]);
+  }
+  return 0;
+}
+
 function findKey(obj, target) {
   const lower = target.toLowerCase();
   return Object.keys(obj).find((k) => k.toLowerCase().includes(lower));
@@ -279,10 +313,24 @@ export async function getEngineerDetail(name) {
   }
 
   const valueRanges = response.data.valueRanges || [];
-  const result = { name, main: [], report: [], fsr: [], rmReport: [], others: [] };
+  const result = {
+    name,
+    main: [],
+    report: [],
+    fsr: [],
+    rmReport: [],
+    others: [],
+    // Backend-computed Tab counts for report-style tabs. MAIN is still
+    // counted client-side from visible-row filtering; these override the
+    // client count for the other four tabs.
+    tabCounts: { report: 0, fsr: 0, rmReport: 0, others: 0 },
+  };
   toFetch.forEach((t, i) => {
     const values = valueRanges[i]?.values || [];
     result[t.key] = rowsToObjects(values);
+    if (t.key in result.tabCounts) {
+      result.tabCounts[t.key] = computeTabCount(values, t.key);
+    }
   });
 
   return result;
