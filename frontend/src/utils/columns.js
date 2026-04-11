@@ -49,7 +49,7 @@ const FIXED_WIDTHS = [
   // 8-digit update-date columns only — must be the two-word phrase so we
   // don't accidentally shrink other columns whose header text happens to
   // contain the word "date" (e.g. Onsite column with "(... + Date + ...)").
-  { match: 'update date', width: 'clamp(76px, 6.6vw, 169px)' },
+  { match: 'update date', width: 'clamp(30px, 2.34vw, 60px)' },
 ];
 
 export function columnWidth(key) {
