@@ -58,7 +58,15 @@ const FIXED_WIDTHS = [
 export function columnWidth(key) {
   if (!key) return null;
   const k = String(key).toLowerCase();
-  const hit = FIXED_WIDTHS.find((w) => k.includes(w.match));
+  // Match only when the pattern is a prefix of the key followed by end-of-string
+  // or a separator character. This avoids false positives like
+  // "Reliability Report and MTBF Report List ([Request Unit-Customer] + PN)"
+  // accidentally matching 'customer' or 'pn'.
+  const hit = FIXED_WIDTHS.find((w) => {
+    if (!k.startsWith(w.match)) return false;
+    const next = k[w.match.length];
+    return next === undefined || /[\s.\-_:,;(){}[\]]/.test(next);
+  });
   return hit ? hit.width : null;
 }
 
