@@ -15,7 +15,7 @@ const MAIN_HIDDEN = [
 export const COLUMN_RENAMES = [
   { match: 'fail symptom', label: 'FAIL SYMPTOM' },
   { match: 'last update', label: 'LAST UPDATE' },
-  { match: 'car open date', label: 'CAR OPEN DATE' },
+  { match: 'car open date', label: 'CAR OPEN' },
   { match: 'car no', label: 'CAR NO.' },
   { match: 'onsite support', label: 'ONSITE SUPPORT AND VIDEO CON.' },
   { match: 'other support', label: 'OTHER SUPPORT' },
