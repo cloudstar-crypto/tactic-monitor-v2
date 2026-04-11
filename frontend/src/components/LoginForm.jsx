@@ -33,7 +33,7 @@ function LoginForm({ onLoginSuccess }) {
   };
 
   return (
-    <div className="container" style={{ maxWidth: '400px', marginTop: '100px' }}>
+    <div className="container" style={{ marginTop: '100px' }}>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '20px' }}>
           <label style={{ display: 'block', marginBottom: '10px' }}>
