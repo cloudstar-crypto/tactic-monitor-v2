@@ -50,6 +50,9 @@ const FIXED_WIDTHS = [
   // don't accidentally shrink other columns whose header text happens to
   // contain the word "date" (e.g. Onsite column with "(... + Date + ...)").
   { match: 'update date', width: 'clamp(30px, 2.34vw, 60px)' },
+  // RM Report has a bare "Update" column. Must come AFTER 'last update'
+  // and 'update date' above so those more-specific matches win first.
+  { match: 'update', width: 'clamp(30px, 2.34vw, 60px)' },
 ];
 
 export function columnWidth(key) {
