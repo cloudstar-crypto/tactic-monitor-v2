@@ -54,17 +54,19 @@ export function getRowAlerts(row) {
   if (!row) return { level: 'NORMAL', workingDays: 0 };
 
   const statusKey = findKey(row, 'status');
-  const lastUpdateKey =
-    findKey(row, 'last update') ||
-    findKey(row, 'update date') ||
-    findKey(row, 'update');
+  const lastUpdateKey = findKey(row, 'last update');
 
   const status = statusKey ? row[statusKey] : '';
   if (isDoneStatus(status)) {
     return { level: 'NORMAL', workingDays: 0 };
   }
 
-  const parsed = lastUpdateKey ? parseDate(row[lastUpdateKey]) : null;
+  // Last Update 欄位前 8 碼即為日期 (YYYYMMDD)
+  const raw = lastUpdateKey ? String(row[lastUpdateKey] || '').trim() : '';
+  const prefix = raw.slice(0, 8);
+  const parsed = /^\d{8}$/.test(prefix)
+    ? new Date(Number(prefix.slice(0, 4)), Number(prefix.slice(4, 6)) - 1, Number(prefix.slice(6, 8)))
+    : parseDate(raw);
   const days = workingDaysSince(parsed);
 
   if (days >= 5) return { level: 'CRITICAL', workingDays: days };
