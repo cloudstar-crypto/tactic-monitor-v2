@@ -1,7 +1,9 @@
-// Per-row alert classification, mirrors the rules used by the backend summarizer.
+// Per-row alert classification for MAIN(CAR) rows.
+// Only rows with status Open / In Progress / Pending are evaluated;
+// all other statuses are treated as NORMAL immediately.
 // CRITICAL: working days since last update >= 5
-// WARNING:  working days >= 3, OR status is open/pending
-// NORMAL:   otherwise (including done/closed rows)
+// WARNING:  working days >= 3, OR status is Open/Pending
+// NORMAL:   otherwise
 
 function findKey(obj, target) {
   const lower = target.toLowerCase();
@@ -38,16 +40,17 @@ function workingDaysSince(date) {
   return count;
 }
 
-function isDoneStatus(raw) {
+// Only Open / In Progress / Pending are active statuses; everything else is NORMAL.
+function isActiveStatus(raw) {
   if (!raw) return false;
   const v = String(raw).toLowerCase();
-  return v.includes('done') || v.includes('closed') || v.includes('complete');
+  return v.includes('open') || v.includes('in progress') || v.includes('pending');
 }
 
 function isOpenOrPendingStatus(raw) {
   if (!raw) return false;
   const v = String(raw).toLowerCase();
-  return v.includes('open') || v.includes('pending') || v.includes('wait') || v.includes('hold');
+  return v.includes('open') || v.includes('pending');
 }
 
 export function getRowAlerts(row) {
@@ -57,7 +60,7 @@ export function getRowAlerts(row) {
   const lastUpdateKey = findKey(row, 'last update');
 
   const status = statusKey ? row[statusKey] : '';
-  if (isDoneStatus(status)) {
+  if (!isActiveStatus(status)) {
     return { level: 'NORMAL', workingDays: 0 };
   }
 
