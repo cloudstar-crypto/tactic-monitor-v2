@@ -72,12 +72,12 @@ function findKey(obj, target) {
 }
 
 function classifyStatus(raw) {
-  if (!raw) return 'unknown';
+  if (!raw) return 'done';
   const v = String(raw).toLowerCase().trim();
-  if (v.includes('done') || v.includes('closed') || v.includes('complete')) return 'done';
-  if (v.includes('pending') || v.includes('wait') || v.includes('hold')) return 'pending';
-  if (v.includes('in progress') || v.includes('progress') || v === 'open' || v.includes('open')) return 'active';
-  return 'unknown';
+  if (v.includes('open')) return 'active';
+  if (v.includes('in progress')) return 'active';
+  if (v.includes('pending')) return 'pending';
+  return 'done';
 }
 
 // Parse various date formats seen in sheets: "2026/04/08", "04/08/2026", "2026-04-08", etc.
@@ -116,8 +116,8 @@ function workingDaysSince(date) {
 }
 
 function computeAlertLevel(maxDays) {
-  if (maxDays > 5) return 'CRITICAL';
-  if (maxDays > 3) return 'WARNING';
+  if (maxDays >= 5) return 'CRITICAL';
+  if (maxDays >= 3) return 'WARNING';
   return 'NORMAL';
 }
 
@@ -127,10 +127,9 @@ function summarizeEngineer(name, rows) {
 
   for (const row of rows) {
     const statusKey = findKey(row, 'status');
-    const lastUpdateKey = findKey(row, 'last update') || findKey(row, 'update date') || findKey(row, 'update');
+    const lastUpdateKey = findKey(row, 'last update');
     if (!statusKey) continue;
     const cls = classifyStatus(row[statusKey]);
-    if (cls === 'unknown') continue;
     all += 1;
     if (cls === 'done') {
       done += 1;
@@ -138,9 +137,13 @@ function summarizeEngineer(name, rows) {
     }
     if (cls === 'active') active += 1;
     if (cls === 'pending') pending += 1;
-    // For non-done rows, measure staleness
+    // For non-done rows, measure staleness via Last Update first 8 chars (YYYYMMDD)
     if (lastUpdateKey) {
-      const parsed = parseDate(row[lastUpdateKey]);
+      const raw = String(row[lastUpdateKey] || '').trim();
+      const prefix = raw.slice(0, 8);
+      const parsed = /^\d{8}$/.test(prefix)
+        ? new Date(Number(prefix.slice(0, 4)), Number(prefix.slice(4, 6)) - 1, Number(prefix.slice(6, 8)))
+        : parseDate(raw);
       if (parsed) {
         const days = workingDaysSince(parsed);
         if (days > maxDaysSinceUpdate) maxDaysSinceUpdate = days;
