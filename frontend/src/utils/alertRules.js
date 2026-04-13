@@ -1,9 +1,10 @@
 // Per-row alert classification for MAIN(CAR) rows.
 // Only rows with status Open / In Progress / Pending are evaluated;
 // all other statuses are treated as NORMAL immediately.
-// CRITICAL: working days since last update >= 5
-// WARNING:  working days >= 3, OR status is Open/Pending
-// NORMAL:   otherwise
+// Alert level is determined solely by working days since Last Update:
+// CRITICAL: >= 5 working days
+// WARNING:  >= 3 working days
+// NORMAL:   < 3 working days
 
 function findKey(obj, target) {
   const lower = target.toLowerCase();
@@ -47,12 +48,6 @@ function isActiveStatus(raw) {
   return v.includes('open') || v.includes('in progress') || v.includes('pending');
 }
 
-function isOpenOrPendingStatus(raw) {
-  if (!raw) return false;
-  const v = String(raw).toLowerCase();
-  return v.includes('open') || v.includes('pending');
-}
-
 export function getRowAlerts(row) {
   if (!row) return { level: 'NORMAL', workingDays: 0 };
 
@@ -73,6 +68,6 @@ export function getRowAlerts(row) {
   const days = workingDaysSince(parsed);
 
   if (days >= 5) return { level: 'CRITICAL', workingDays: days };
-  if (days >= 3 || isOpenOrPendingStatus(status)) return { level: 'WARNING', workingDays: days };
+  if (days >= 3) return { level: 'WARNING', workingDays: days };
   return { level: 'NORMAL', workingDays: days };
 }
