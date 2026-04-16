@@ -1544,41 +1544,18 @@ input {
 .msd-status-loading { color: var(--army-light); }
 .msd-status-error   { color: var(--critical); }
 
-/* Horizontally scrollable tab strip. */
-.msd-tabs {
-  flex: 0 0 auto;
+/* MAIN (CAR) label + count shown in the topbar. */
+.msd-topbar-right {
   display: flex;
-  gap: 4px;
-  padding: 6px 10px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-  border-bottom: 1px solid var(--border-soft);
-  background: rgba(7, 11, 4, 0.55);
-  white-space: nowrap;
-  scrollbar-width: none;
-}
-.msd-tabs::-webkit-scrollbar { display: none; }
-.msd-tab {
-  flex: 0 0 auto;
-  background: transparent;
-  border: 1px solid transparent;
-  border-bottom: 2px solid transparent;
-  color: var(--text-dim);
-  padding: 8px 10px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  display: inline-flex;
   align-items: center;
   gap: 6px;
+  margin-left: auto;
 }
-.msd-tab-active {
+.msd-tab-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
   color: var(--army-glow);
-  border-bottom-color: var(--army-mid);
-  background: rgba(143, 174, 95, 0.10);
 }
 .msd-tab-count {
   display: inline-flex;
@@ -1591,12 +1568,7 @@ input {
   background: rgba(7, 11, 4, 0.5);
   color: var(--army-light);
 }
-.msd-tab-active .msd-tab-count {
-  border-color: var(--army-mid);
-  color: var(--army-glow);
-}
-
-/* Card list for tab contents. */
+/* Card list. */
 .msd-list {
   flex: 1;
   min-height: 0;
@@ -1659,6 +1631,21 @@ input {
   position: absolute;
   top: 8px;
   right: 8px;
+}
+
+/* Pull-to-refresh indicator. */
+.msd-pull-indicator {
+  height: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: var(--army-glow);
+  opacity: 0;
+  transition: height 0.2s ease, opacity 0.2s ease;
+  flex-shrink: 0;
 }
 
 /* --- Mobile overrides for reused MissionDossier (.md-*) ---

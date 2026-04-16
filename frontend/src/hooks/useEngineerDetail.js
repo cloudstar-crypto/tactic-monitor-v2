@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 const cache = new Map(); // name -> { data, timestamp }
 const TTL = 5 * 60 * 1000;
@@ -11,16 +11,20 @@ export function useEngineerDetail(name) {
   });
   const [loading, setLoading] = useState(!data);
   const [error, setError] = useState('');
+  const [refreshKey, setRefreshKey] = useState(0);
 
   useEffect(() => {
     if (!name) return;
     let cancelled = false;
 
-    const hit = cache.get(name);
-    if (hit && Date.now() - hit.timestamp < TTL) {
-      setData(hit.data);
-      setLoading(false);
-      return;
+    // On a manual refresh (refreshKey > 0), skip cache.
+    if (refreshKey === 0) {
+      const hit = cache.get(name);
+      if (hit && Date.now() - hit.timestamp < TTL) {
+        setData(hit.data);
+        setLoading(false);
+        return;
+      }
     }
 
     setLoading(true);
@@ -50,7 +54,12 @@ export function useEngineerDetail(name) {
     return () => {
       cancelled = true;
     };
+  }, [name, refreshKey]);
+
+  const refresh = useCallback(() => {
+    cache.delete(name);
+    setRefreshKey((k) => k + 1);
   }, [name]);
 
-  return { data, loading, error };
+  return { data, loading, error, refresh };
 }

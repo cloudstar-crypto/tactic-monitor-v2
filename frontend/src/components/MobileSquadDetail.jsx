@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useEngineerDetail } from '../hooks/useEngineerDetail';
 import MissionDossier from './MissionDossier';
@@ -7,33 +7,17 @@ import { SQUADS } from '../utils/squads';
 import { isHiddenColumn, displayName, rowHasVisibleContent } from '../utils/columns';
 import { getRowAlerts } from '../utils/alertRules';
 
-const TABS = [
-  { key: 'main',     label: 'MAIN' },
-  { key: 'report',   label: 'FAR' },
-  { key: 'fsr',      label: 'FW/SW' },
-  { key: 'rmReport', label: 'RM' },
-  { key: 'others',   label: 'OTHERS' },
-];
-
 function findSquadOf(name) {
   return SQUADS.find((s) => s.members.includes(name)) || null;
 }
 
-// Build the ordered list of keys to display for a single row card.
-// Re-applies the same "update date goes to the end" rule used in
-// TacticTable so the mobile and desktop views stay consistent. The
-// match must be the two-word phrase so other columns whose header
-// happens to contain the word "date" (e.g. Onsite column) stay put.
-function buildOrderedKeys(row, tab) {
-  const keys = Object.keys(row || {}).filter((k) => !isHiddenColumn(k, tab));
-  if (tab === 'main') return keys;
-  const isDate = (k) => String(k).toLowerCase().includes('update date');
-  return [...keys.filter((k) => !isDate(k)), ...keys.filter(isDate)];
+function buildOrderedKeys(row) {
+  return Object.keys(row || {}).filter((k) => !isHiddenColumn(k, 'main'));
 }
 
-function RowCard({ row, tab, onClick }) {
-  const keys = useMemo(() => buildOrderedKeys(row, tab), [row, tab]);
-  const alerts = tab === 'main' ? getRowAlerts(row) : null;
+function RowCard({ row, onClick }) {
+  const keys = useMemo(() => buildOrderedKeys(row), [row]);
+  const alerts = getRowAlerts(row);
 
   return (
     <button type="button" className="msd-card" onClick={onClick}>
@@ -48,7 +32,7 @@ function RowCard({ row, tab, onClick }) {
         return (
           <div className="msd-card-field" key={k}>
             <div className="msd-card-label">{displayName(k)}</div>
-            <div className={`msd-card-value${tab === 'main' ? '' : ' msd-card-value-wrap'}`}>{String(v)}</div>
+            <div className="msd-card-value">{String(v)}</div>
           </div>
         );
       })}
@@ -56,36 +40,86 @@ function RowCard({ row, tab, onClick }) {
   );
 }
 
+// Pull-to-refresh: track touch gestures on the list container.
+const PULL_THRESHOLD = 60;
+
+function usePullToRefresh(onRefresh, isRefreshing) {
+  const listRef = useRef(null);
+  const startY = useRef(0);
+  const pulling = useRef(false);
+  const pullDistance = useRef(0);
+  const indicatorRef = useRef(null);
+
+  const onTouchStart = useCallback((e) => {
+    const el = listRef.current;
+    if (!el || el.scrollTop > 0) return;
+    startY.current = e.touches[0].clientY;
+    pulling.current = true;
+    pullDistance.current = 0;
+  }, []);
+
+  const onTouchMove = useCallback((e) => {
+    if (!pulling.current) return;
+    const el = listRef.current;
+    if (!el || el.scrollTop > 0) {
+      pulling.current = false;
+      if (indicatorRef.current) indicatorRef.current.style.height = '0px';
+      return;
+    }
+    const dy = e.touches[0].clientY - startY.current;
+    if (dy < 0) return;
+    // Dampen the pull distance
+    pullDistance.current = Math.min(dy * 0.4, 80);
+    if (indicatorRef.current) {
+      indicatorRef.current.style.height = `${pullDistance.current}px`;
+      indicatorRef.current.style.opacity = Math.min(pullDistance.current / PULL_THRESHOLD, 1);
+    }
+  }, []);
+
+  const onTouchEnd = useCallback(() => {
+    if (!pulling.current) return;
+    pulling.current = false;
+    const triggered = pullDistance.current >= PULL_THRESHOLD;
+    pullDistance.current = 0;
+    if (indicatorRef.current) {
+      indicatorRef.current.style.height = triggered ? '32px' : '0px';
+      indicatorRef.current.style.opacity = triggered ? 1 : 0;
+    }
+    if (triggered && !isRefreshing) onRefresh();
+  }, [onRefresh, isRefreshing]);
+
+  return { listRef, indicatorRef, onTouchStart, onTouchMove, onTouchEnd };
+}
+
 function MobileSquadDetail() {
   const { name } = useParams();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [activeTab, setActiveTab] = useState('main');
 
-  const { data, loading, error } = useEngineerDetail(name);
+  const { data, loading, error, refresh } = useEngineerDetail(name);
   const squad = useMemo(() => findSquadOf(name), [name]);
+
+  const { listRef, indicatorRef, onTouchStart, onTouchMove, onTouchEnd } =
+    usePullToRefresh(refresh, loading);
+
+  // Collapse pull indicator when loading finishes.
+  useEffect(() => {
+    if (!loading && indicatorRef.current) {
+      indicatorRef.current.style.height = '0px';
+      indicatorRef.current.style.opacity = 0;
+    }
+  }, [loading, indicatorRef]);
 
   const rowParam = searchParams.get('row');
   const selectedRowIdx = rowParam != null ? Number(rowParam) : null;
 
-  const tabRows = data?.[activeTab] || [];
+  const tabRows = data?.main || [];
   const visibleRows = useMemo(
-    () => tabRows.filter((r) => rowHasVisibleContent(r, activeTab)),
-    [tabRows, activeTab],
+    () => tabRows.filter((r) => rowHasVisibleContent(r, 'main')),
+    [tabRows],
   );
 
-  const tabCounts = useMemo(() => {
-    const out = {};
-    for (const t of TABS) {
-      if (t.key === 'main') {
-        const arr = data?.[t.key] || [];
-        out[t.key] = arr.filter((r) => rowHasVisibleContent(r, t.key)).length;
-      } else {
-        out[t.key] = data?.tabCounts?.[t.key] ?? 0;
-      }
-    }
-    return out;
-  }, [data]);
+  const rowCount = visibleRows.length;
 
   const handleRowClick = (idx) => {
     setSearchParams({ row: String(idx) });
@@ -97,8 +131,7 @@ function MobileSquadDetail() {
     navigate('/');
   };
 
-  // Layer 3: Mission Dossier (mobile reuses the desktop component —
-  // .md-grid collapses to a single column on narrow screens via minmax).
+  // Layer 3: Mission Dossier
   if (selectedRowIdx != null && visibleRows[selectedRowIdx]) {
     return (
       <main className="msd-root msd-root-dossier">
@@ -122,29 +155,24 @@ function MobileSquadDetail() {
           <div className="msd-identity-name">{name}</div>
           <div className="msd-identity-squad">{squad?.name || 'UNASSIGNED'}</div>
         </div>
+        <div className="msd-topbar-right">
+          <span className="msd-tab-label">MAIN (CAR)</span>
+          <span className="msd-tab-count">{rowCount}</span>
+        </div>
         {loading && <span className="msd-status-loading">SYNC…</span>}
         {error && <span className="msd-status-error">⚠</span>}
       </div>
 
-      <nav className="msd-tabs">
-        {TABS.map((t) => {
-          const count = tabCounts[t.key] || 0;
-          const active = activeTab === t.key;
-          return (
-            <button
-              key={t.key}
-              type="button"
-              className={`msd-tab${active ? ' msd-tab-active' : ''}`}
-              onClick={() => setActiveTab(t.key)}
-            >
-              <span>{t.label}</span>
-              <span className="msd-tab-count">{count}</span>
-            </button>
-          );
-        })}
-      </nav>
-
-      <div className="msd-list">
+      <div
+        className="msd-list"
+        ref={listRef}
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
+        <div className="msd-pull-indicator" ref={indicatorRef}>
+          {loading ? 'SYNCING…' : '↓ PULL TO REFRESH'}
+        </div>
         {loading && !data && (
           <div className="msd-empty">ESTABLISHING UPLINK…</div>
         )}
@@ -155,8 +183,7 @@ function MobileSquadDetail() {
           <RowCard
             key={idx}
             row={row}
-            tab={activeTab}
-            onClick={activeTab === 'main' ? () => handleRowClick(idx) : undefined}
+            onClick={() => handleRowClick(idx)}
           />
         ))}
       </div>
