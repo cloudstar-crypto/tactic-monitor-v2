@@ -45,7 +45,7 @@ function MemberRow({ member, onClick }) {
   );
 }
 
-function SquadBlock({ squad, onMemberClick }) {
+function SquadBlock({ squad, onMemberClick, onCaptainClick }) {
   const { name, captainStats, memberStats, colorPrimary, colorAccent } = squad;
   const cLevel = captainStats.alertLevel || 'NORMAL';
   const cColors = ALERT_COLORS[cLevel] || ALERT_COLORS.NORMAL;
@@ -64,7 +64,7 @@ function SquadBlock({ squad, onMemberClick }) {
         <div className="mbd-squad-meta">{memberStats.length} OPS</div>
       </header>
 
-      <div className="mbd-captain" style={{ '--tc-border': cColors.border, '--tc-glow': cColors.glow }}>
+      <button type="button" className="mbd-captain mbd-captain-clickable" style={{ '--tc-border': cColors.border, '--tc-glow': cColors.glow }} onClick={() => onCaptainClick(captainStats.name)}>
         <SkullMarineAvatar size={44} alertLevel={cLevel} isCaptain />
         <div className="mbd-captain-id">
           <div className="mbd-captain-role" style={{ color: cColors.label }}>CAPTAIN</div>
@@ -88,7 +88,7 @@ function SquadBlock({ squad, onMemberClick }) {
             <span className="mbd-stat-val" style={{ color: '#6b8e23' }}>{captainStats.done || 0}</span>
           </span>
         </div>
-      </div>
+      </button>
 
       <div className="mbd-members">
         {memberStats.map((m) => (
@@ -133,6 +133,10 @@ function MobileDashboard() {
     navigate(`/squad/${encodeURIComponent(name)}`);
   };
 
+  const handleCaptainClick = (name) => {
+    navigate(`/captain/${encodeURIComponent(name)}`);
+  };
+
   if (loading) {
     return (
       <main className="mbd-root">
@@ -160,7 +164,7 @@ function MobileDashboard() {
 
       <div className="mbd-squads">
         {squads.map((sq) => (
-          <SquadBlock key={sq.id} squad={sq} onMemberClick={handleMemberClick} />
+          <SquadBlock key={sq.id} squad={sq} onMemberClick={handleMemberClick} onCaptainClick={handleCaptainClick} />
         ))}
       </div>
     </main>

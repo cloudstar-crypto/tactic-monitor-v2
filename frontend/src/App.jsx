@@ -6,6 +6,7 @@ import StrategicMap from './components/StrategicMap';
 import SquadDetail from './components/SquadDetail';
 import MobileDashboard from './components/MobileDashboard';
 import MobileSquadDetail from './components/MobileSquadDetail';
+import CaptainSearch from './components/CaptainSearch';
 import InstallPrompt from './components/InstallPrompt';
 import { useIsMobile } from './hooks/useIsMobile';
 
@@ -58,6 +59,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MobileDashboard />} />
           <Route path="/squad/:name" element={<MobileSquadDetail />} />
+          <Route path="/captain/:name" element={<CaptainSearch />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         <InstallPrompt />
@@ -72,6 +74,7 @@ function App() {
       <Routes>
         <Route path="/" element={<StrategicMap />} />
         <Route path="/squad/:name" element={<SquadDetail />} />
+        <Route path="/captain/:name" element={<CaptainSearch />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>

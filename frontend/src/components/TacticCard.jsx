@@ -25,14 +25,20 @@ function TacticCard({ data, variant = 'member' }) {
   const { name, role, all = 0, active = 0, pending = 0, done = 0, alertLevel = 'NORMAL' } = data || {};
   const colors = ALERT_COLORS[alertLevel] || ALERT_COLORS.NORMAL;
   const isCaptain = variant === 'captain';
-  const handleClick = !isCaptain && name ? () => navigate(`/squad/${encodeURIComponent(name)}`) : undefined;
+  const handleClick = name
+    ? () => navigate(isCaptain ? `/captain/${encodeURIComponent(name)}` : `/squad/${encodeURIComponent(name)}`)
+    : undefined;
 
   if (isCaptain) {
     // Horizontal layout: identity on left, stats + ecg on right
     return (
       <div
-        className="tc-card tc-captain"
+        className="tc-card tc-captain tc-clickable"
         style={{ '--tc-border': colors.border, '--tc-glow': colors.glow }}
+        onClick={handleClick}
+        role={handleClick ? 'button' : undefined}
+        tabIndex={handleClick ? 0 : undefined}
+        onKeyDown={handleClick ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleClick(); } } : undefined}
       >
         <span className="tc-corner tc-tl" />
         <span className="tc-corner tc-tr" />

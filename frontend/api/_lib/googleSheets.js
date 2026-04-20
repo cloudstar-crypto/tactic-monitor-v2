@@ -338,3 +338,54 @@ export async function getEngineerDetail(name) {
 
   return result;
 }
+
+// Fetch all MAIN(CAR) rows for a list of engineers in one batch call.
+// Each row gets an `_engineer` field indicating which member it belongs to.
+export async function getSquadMainRows(members) {
+  const sheetId = process.env.GOOGLE_SHEET_ID;
+  if (!sheetId) throw new Error('Missing GOOGLE_SHEET_ID');
+
+  const auth = getAuth();
+  const sheets = google.sheets({ version: 'v4', auth });
+
+  let meta;
+  try {
+    meta = await sheets.spreadsheets.get({
+      spreadsheetId: sheetId,
+      fields: 'sheets.properties.title',
+    });
+  } catch (err) {
+    throw new Error(`Google Sheets metadata error: ${err.message}`);
+  }
+  const sheetTitles = (meta.data.sheets || []).map((s) => s.properties.title);
+
+  const toFetch = members
+    .map((name) => ({ name, title: findEngineerSheet(sheetTitles, name) }))
+    .filter((m) => m.title);
+
+  const ranges = toFetch.map((m) => `'${m.title}'!A1:Z500`);
+
+  let response = { data: { valueRanges: [] } };
+  if (ranges.length > 0) {
+    try {
+      response = await sheets.spreadsheets.values.batchGet({
+        spreadsheetId: sheetId,
+        ranges,
+      });
+    } catch (err) {
+      throw new Error(`Google Sheets values error: ${err.message}`);
+    }
+  }
+
+  const valueRanges = response.data.valueRanges || [];
+  const allRows = [];
+  toFetch.forEach((m, i) => {
+    const rows = rowsToObjects(valueRanges[i]?.values || []);
+    for (const row of rows) {
+      const hasContent = Object.values(row).some((v) => v != null && String(v).trim() !== '');
+      if (hasContent) allRows.push({ ...row, _engineer: m.name });
+    }
+  });
+
+  return allRows;
+}

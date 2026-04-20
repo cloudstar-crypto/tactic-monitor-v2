@@ -1484,6 +1484,192 @@ input {
 }
 
 /* ============================================================
+   Captain Search (cs-) — Squad-wide CAR search page
+   Accessible from Captain card on both desktop and mobile.
+   ============================================================ */
+
+.cs-root {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-abyss);
+}
+.cs-topbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  background: rgba(7, 11, 4, 0.65);
+}
+.cs-back {
+  flex: 0 0 auto;
+  padding: 6px 12px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--army-glow);
+  border: 1px solid var(--army-mid);
+  background: rgba(143, 174, 95, 0.08);
+  cursor: pointer;
+}
+.cs-identity {
+  flex: 1;
+  min-width: 0;
+}
+.cs-identity-name {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--army-glow);
+}
+.cs-identity-squad {
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+}
+.cs-status {
+  flex: 0 0 auto;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--army-light);
+}
+.cs-status-error { color: var(--critical); }
+
+.cs-search-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  background: rgba(7, 11, 4, 0.45);
+}
+.cs-input {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--army-glow);
+  background: rgba(7, 11, 4, 0.6);
+  border: 1px solid var(--border-mid);
+  outline: none;
+  font-family: inherit;
+}
+.cs-input::placeholder {
+  color: var(--text-dim);
+  letter-spacing: 1.2px;
+}
+.cs-input:focus {
+  border-color: var(--army-mid);
+  box-shadow: 0 0 6px rgba(143, 174, 95, 0.25);
+}
+.cs-result-count {
+  flex: 0 0 auto;
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  color: var(--text-dim);
+}
+
+.cs-results {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 12px 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.cs-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+
+.cs-card {
+  background: rgba(13, 20, 9, 0.7);
+  border: 1px solid var(--border-soft);
+  padding: 0;
+}
+.cs-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border-soft);
+  background: rgba(143, 174, 95, 0.06);
+}
+.cs-card-engineer {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--army-glow);
+}
+.cs-card-carno {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--army-light);
+  font-weight: 700;
+}
+.cs-card-body {
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.cs-card-field {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  font-size: 11px;
+  line-height: 1.4;
+}
+.cs-card-label {
+  flex: 0 0 auto;
+  min-width: 90px;
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.cs-card-value {
+  flex: 1;
+  color: var(--text);
+  word-break: break-word;
+}
+.cs-card-value-wrap {
+  white-space: pre-wrap;
+}
+
+/* Mobile captain clickable */
+.mbd-captain-clickable {
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+.mbd-captain-clickable:active {
+  background: rgba(143, 174, 95, 0.10);
+  border-color: var(--army-mid);
+}
+
+/* Mobile-specific adjustments for cs- */
+@media (max-width: 768px) {
+  .cs-topbar { padding: 8px 12px; gap: 10px; }
+  .cs-back { font-size: 10px; padding: 6px 10px; }
+  .cs-identity-name { font-size: 13px; }
+  .cs-search-bar { padding: 8px 12px; }
+  .cs-input { font-size: 11px; padding: 7px 10px; }
+  .cs-results { padding: 10px 10px calc(24px + var(--safe-bottom)); }
+  .cs-card-label { min-width: 72px; }
+}
+
+/* ============================================================
    Mobile Squad Detail (msd-) — Layer 2 for mobile
    Tab strip + scrollable card list; click card -> Layer 3.
    ============================================================ */
