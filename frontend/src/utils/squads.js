@@ -16,7 +16,7 @@ export const SQUADS = [
     colorPrimary: '#8b6914',
     colorAccent: '#d4a24c',
     captain: 'Ali',
-    members: ['Allen', 'Wallace', 'Daniel', 'Carlos'],
+    members: ['Allen', 'Wallace', 'Daniel', 'Carlos', 'Bobo'],
   },
 ];
 

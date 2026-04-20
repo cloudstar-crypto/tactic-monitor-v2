@@ -2,7 +2,7 @@ import { google } from 'googleapis';
 
 const ENGINEERS = [
   'Joseph', 'Leo', 'Ian', 'Alien', 'Vincent',
-  'Allen', 'Wallace', 'Daniel', 'Carlos',
+  'Allen', 'Wallace', 'Daniel', 'Carlos', 'Bobo',
 ];
 
 const EXCLUDED_SHEETS = ['summary_temp', 'summary'];
