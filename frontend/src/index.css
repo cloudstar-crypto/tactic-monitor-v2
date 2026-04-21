@@ -1549,8 +1549,8 @@ input {
 }
 .cs-input {
   flex: 1;
-  padding: 8px 12px;
-  font-size: 12px;
+  padding: 10px 14px;
+  font-size: clamp(13px, 1.04vw, 22px);
   letter-spacing: 1px;
   color: var(--army-glow);
   background: rgba(7, 11, 4, 0.6);
@@ -1600,39 +1600,39 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-bottom: 1px solid var(--border-soft);
   background: rgba(143, 174, 95, 0.06);
 }
+.cs-card-carno {
+  font-size: clamp(13px, 1.04vw, 22px);
+  letter-spacing: 1px;
+  color: var(--army-glow);
+  font-weight: 700;
+}
 .cs-card-engineer {
-  font-size: 11px;
+  font-size: clamp(12px, 0.97vw, 20px);
   font-weight: 700;
   letter-spacing: 1.2px;
-  color: var(--army-glow);
-}
-.cs-card-carno {
-  font-size: 10px;
-  letter-spacing: 1px;
   color: var(--army-light);
-  font-weight: 700;
 }
 .cs-card-body {
-  padding: 8px 12px;
+  padding: 10px 14px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
 }
 .cs-card-field {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   align-items: baseline;
-  font-size: 11px;
-  line-height: 1.4;
+  font-size: clamp(12px, 0.97vw, 20px);
+  line-height: 1.45;
 }
 .cs-card-label {
   flex: 0 0 auto;
-  min-width: 90px;
-  font-size: 9px;
+  min-width: 100px;
+  font-size: clamp(10px, 0.76vw, 16px);
   letter-spacing: 1px;
   color: var(--text-dim);
   text-transform: uppercase;
@@ -1664,9 +1664,14 @@ input {
   .cs-back { font-size: 10px; padding: 6px 10px; }
   .cs-identity-name { font-size: 13px; }
   .cs-search-bar { padding: 8px 12px; }
-  .cs-input { font-size: 11px; padding: 7px 10px; }
+  .cs-input { font-size: 13px; padding: 9px 12px; }
   .cs-results { padding: 10px 10px calc(24px + var(--safe-bottom)); }
-  .cs-card-label { min-width: 72px; }
+  .cs-card-header { padding: 8px 12px; }
+  .cs-card-body { padding: 9px 12px; gap: 6px; }
+  .cs-card-carno { font-size: 13px; }
+  .cs-card-engineer { font-size: 12px; }
+  .cs-card-field { font-size: 12px; }
+  .cs-card-label { min-width: 80px; font-size: 10px; }
 }
 
 /* ============================================================

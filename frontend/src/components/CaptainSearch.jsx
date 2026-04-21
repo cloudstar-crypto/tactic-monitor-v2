@@ -82,8 +82,8 @@ function CaptainSearch() {
         {results.map((r, i) => (
           <div className="cs-card" key={i}>
             <div className="cs-card-header">
-              <span className="cs-card-engineer">{r.engineer}</span>
               <span className="cs-card-carno">CAR {r.carNo}</span>
+              <span className="cs-card-engineer">{r.engineer}</span>
             </div>
             <div className="cs-card-body">
               <div className="cs-card-field">
