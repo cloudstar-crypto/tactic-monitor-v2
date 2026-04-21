@@ -1700,7 +1700,7 @@ input {
 .msd-back {
   flex: 0 0 auto;
   padding: 6px 10px;
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: var(--army-glow);
   border: 1px solid var(--army-mid);
@@ -1713,7 +1713,7 @@ input {
   overflow: hidden;
 }
 .msd-identity-name {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--army-glow);
@@ -1722,14 +1722,14 @@ input {
   text-overflow: ellipsis;
 }
 .msd-identity-squad {
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 1px;
   color: var(--text-dim);
 }
 .msd-status-loading,
 .msd-status-error {
   flex: 0 0 auto;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 1px;
 }
 .msd-status-loading { color: var(--army-light); }
@@ -1743,7 +1743,7 @@ input {
   margin-left: auto;
 }
 .msd-tab-label {
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 1.2px;
   color: var(--army-glow);
@@ -1754,7 +1754,7 @@ input {
   justify-content: center;
   min-width: 20px;
   padding: 0 5px;
-  font-size: 9px;
+  font-size: 11px;
   border: 1px solid var(--border-mid);
   background: rgba(7, 11, 4, 0.5);
   color: var(--army-light);
@@ -1791,13 +1791,13 @@ input {
   display: flex;
   gap: 8px;
   align-items: baseline;
-  font-size: 11px;
-  line-height: 1.4;
+  font-size: 13px;
+  line-height: 1.45;
 }
 .msd-card-label {
   flex: 0 0 auto;
-  min-width: 72px;
-  font-size: 9px;
+  min-width: 80px;
+  font-size: 11px;
   letter-spacing: 1px;
   color: var(--text-dim);
   text-transform: uppercase;
@@ -1815,7 +1815,7 @@ input {
   padding: 40px 20px;
   text-align: center;
   color: var(--text-dim);
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1.5px;
 }
 .msd-card-badge {
@@ -1831,7 +1831,7 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 1.5px;
   color: var(--army-glow);
   opacity: 0;
@@ -1848,7 +1848,7 @@ input {
   gap: 8px;
 }
 .msd-root-dossier .md-back {
-  font-size: 10px;
+  font-size: 12px;
   padding: 5px 10px;
 }
 .msd-root-dossier .md-identity {
@@ -1859,18 +1859,18 @@ input {
   height: 48px !important;
 }
 .msd-root-dossier .md-identity-name {
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 1.5px;
 }
 .msd-root-dossier .md-identity-role {
-  font-size: 9px;
+  font-size: 11px;
 }
 .msd-root-dossier .md-title {
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 1.2px;
 }
 .msd-root-dossier .md-title-car {
-  font-size: 12px;
+  font-size: 14px;
 }
 .msd-root-dossier .md-body {
   padding: 12px 12px calc(28px + var(--safe-bottom));
@@ -1880,7 +1880,7 @@ input {
   margin-bottom: 14px;
 }
 .msd-root-dossier .md-section-title {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1.5px;
   margin-bottom: 10px;
 }
@@ -1892,10 +1892,10 @@ input {
   padding: 8px 10px;
 }
 .msd-root-dossier .md-field-label {
-  font-size: 9px;
+  font-size: 11px;
 }
 .msd-root-dossier .md-field-value {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 /* ============================================================
