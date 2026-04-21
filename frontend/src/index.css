@@ -1508,7 +1508,7 @@ input {
 .cs-back {
   flex: 0 0 auto;
   padding: 6px 12px;
-  font-size: 11px;
+  font-size: clamp(11px, 0.90vw, 18px);
   letter-spacing: 1px;
   color: var(--army-glow);
   border: 1px solid var(--army-mid);
@@ -1520,19 +1520,19 @@ input {
   min-width: 0;
 }
 .cs-identity-name {
-  font-size: 14px;
+  font-size: clamp(14px, 1.25vw, 26px);
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--army-glow);
 }
 .cs-identity-squad {
-  font-size: 9px;
+  font-size: clamp(9px, 0.69vw, 16px);
   letter-spacing: 1px;
   color: var(--text-dim);
 }
 .cs-status {
   flex: 0 0 auto;
-  font-size: 9px;
+  font-size: clamp(9px, 0.69vw, 16px);
   letter-spacing: 1px;
   color: var(--army-light);
 }
@@ -1568,7 +1568,7 @@ input {
 }
 .cs-result-count {
   flex: 0 0 auto;
-  font-size: 9px;
+  font-size: clamp(10px, 0.76vw, 16px);
   letter-spacing: 1.2px;
   color: var(--text-dim);
 }
@@ -1587,7 +1587,7 @@ input {
   padding: 40px 20px;
   text-align: center;
   color: var(--text-dim);
-  font-size: 11px;
+  font-size: clamp(11px, 0.90vw, 18px);
   letter-spacing: 1.5px;
 }
 
