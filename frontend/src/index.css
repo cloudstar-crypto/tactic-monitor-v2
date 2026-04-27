@@ -1287,7 +1287,7 @@ input {
   align-items: center;
   gap: 12px;
   padding: 6px 14px;
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 1.5px;
   color: var(--text-dim);
   text-transform: uppercase;
@@ -1311,7 +1311,7 @@ input {
   align-items: center;
   justify-content: center;
   gap: 14px;
-  font-size: 12px;
+  font-size: 14px;
   letter-spacing: 2px;
   color: var(--army-light);
 }
@@ -1360,13 +1360,13 @@ input {
 }
 .mbd-squad-title {
   flex: 1;
-  font-size: 13px;
+  font-size: 15px;
   letter-spacing: 2px;
   color: var(--sq-accent, var(--army-glow));
   text-shadow: 0 0 8px rgba(181, 212, 119, 0.3);
 }
 .mbd-squad-meta {
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1.5px;
   color: var(--text-dim);
 }
@@ -1385,12 +1385,12 @@ input {
   min-width: 0;
 }
 .mbd-captain-role {
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 1.5px;
   font-weight: 700;
 }
 .mbd-captain-name {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--army-glow);
@@ -1438,7 +1438,7 @@ input {
   min-width: 0;
 }
 .mbd-member-name {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--text);
   white-space: nowrap;
@@ -1446,7 +1446,7 @@ input {
   text-overflow: ellipsis;
 }
 .mbd-member-alert {
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 1px;
   margin-top: 2px;
 }
@@ -1463,13 +1463,13 @@ input {
   min-width: 32px;
 }
 .mbd-stat-lbl {
-  font-size: 10px;
+  font-size: 12px;
   letter-spacing: 0.8px;
   color: var(--text-dim);
   text-transform: uppercase;
 }
 .mbd-stat-val {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   color: var(--text);
   font-variant-numeric: tabular-nums;
@@ -1478,7 +1478,7 @@ input {
 
 .mbd-chevron {
   flex: 0 0 auto;
-  font-size: 18px;
+  font-size: 20px;
   color: var(--text-dim);
   padding: 0 2px;
 }
@@ -1661,17 +1661,20 @@ input {
 /* Mobile-specific adjustments for cs- */
 @media (max-width: 768px) {
   .cs-topbar { padding: 8px 12px; gap: 10px; }
-  .cs-back { font-size: 10px; padding: 6px 10px; }
-  .cs-identity-name { font-size: 13px; }
+  .cs-back { font-size: 13px; padding: 6px 10px; }
+  .cs-identity-name { font-size: 17px; }
+  .cs-identity-squad { font-size: 12px; }
   .cs-search-bar { padding: 8px 12px; }
-  .cs-input { font-size: 13px; padding: 9px 12px; }
+  .cs-input { font-size: 14px; padding: 9px 12px; }
+  .cs-result-count { font-size: 12px; }
   .cs-results { padding: 10px 10px calc(24px + var(--safe-bottom)); }
-  .cs-card-header { padding: 8px 12px; }
+  .cs-card-header { padding: 9px 12px; }
   .cs-card-body { padding: 9px 12px; gap: 6px; }
-  .cs-card-carno { font-size: 13px; }
-  .cs-card-engineer { font-size: 12px; }
-  .cs-card-field { font-size: 12px; }
-  .cs-card-label { min-width: 80px; font-size: 10px; }
+  .cs-card-carno { font-size: 15px; }
+  .cs-card-engineer { font-size: 14px; }
+  .cs-card-field { font-size: 14px; }
+  .cs-card-label { min-width: 84px; font-size: 12px; }
+  .cs-empty { font-size: 14px; }
 }
 
 /* ============================================================
@@ -1700,7 +1703,7 @@ input {
 .msd-back {
   flex: 0 0 auto;
   padding: 6px 10px;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 1px;
   color: var(--army-glow);
   border: 1px solid var(--army-mid);
@@ -1713,7 +1716,7 @@ input {
   overflow: hidden;
 }
 .msd-identity-name {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 700;
   letter-spacing: 1.5px;
   color: var(--army-glow);
@@ -1722,14 +1725,14 @@ input {
   text-overflow: ellipsis;
 }
 .msd-identity-squad {
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: var(--text-dim);
 }
 .msd-status-loading,
 .msd-status-error {
   flex: 0 0 auto;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 1px;
 }
 .msd-status-loading { color: var(--army-light); }
@@ -1743,7 +1746,7 @@ input {
   margin-left: auto;
 }
 .msd-tab-label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 1.2px;
   color: var(--army-glow);
@@ -1754,7 +1757,7 @@ input {
   justify-content: center;
   min-width: 20px;
   padding: 0 5px;
-  font-size: 11px;
+  font-size: 12px;
   border: 1px solid var(--border-mid);
   background: rgba(7, 11, 4, 0.5);
   color: var(--army-light);
@@ -1791,13 +1794,13 @@ input {
   display: flex;
   gap: 8px;
   align-items: baseline;
-  font-size: 13px;
-  line-height: 1.45;
+  font-size: 14px;
+  line-height: 1.5;
 }
 .msd-card-label {
   flex: 0 0 auto;
-  min-width: 80px;
-  font-size: 11px;
+  min-width: 84px;
+  font-size: 12px;
   letter-spacing: 1px;
   color: var(--text-dim);
   text-transform: uppercase;
@@ -1815,7 +1818,7 @@ input {
   padding: 40px 20px;
   text-align: center;
   color: var(--text-dim);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 1.5px;
 }
 .msd-card-badge {
@@ -1831,7 +1834,7 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 1.5px;
   color: var(--army-glow);
   opacity: 0;
@@ -1848,7 +1851,7 @@ input {
   gap: 8px;
 }
 .msd-root-dossier .md-back {
-  font-size: 12px;
+  font-size: 13px;
   padding: 5px 10px;
 }
 .msd-root-dossier .md-identity {
@@ -1859,18 +1862,18 @@ input {
   height: 48px !important;
 }
 .msd-root-dossier .md-identity-name {
-  font-size: 18px;
+  font-size: 20px;
   letter-spacing: 1.5px;
 }
 .msd-root-dossier .md-identity-role {
-  font-size: 11px;
+  font-size: 12px;
 }
 .msd-root-dossier .md-title {
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 1.2px;
 }
 .msd-root-dossier .md-title-car {
-  font-size: 14px;
+  font-size: 15px;
 }
 .msd-root-dossier .md-body {
   padding: 12px 12px calc(28px + var(--safe-bottom));
@@ -1880,7 +1883,7 @@ input {
   margin-bottom: 14px;
 }
 .msd-root-dossier .md-section-title {
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 1.5px;
   margin-bottom: 10px;
 }
@@ -1892,10 +1895,10 @@ input {
   padding: 8px 10px;
 }
 .msd-root-dossier .md-field-label {
-  font-size: 11px;
+  font-size: 12px;
 }
 .msd-root-dossier .md-field-value {
-  font-size: 14px;
+  font-size: 15px;
 }
 
 /* ============================================================
